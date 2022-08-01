@@ -22,7 +22,15 @@ class User(AbstractUser):
     picture = models.ImageField(upload_to='picture_uploads/', default='')
     
     def serialize(self):
-        pass
+        return {
+            "username": self.username,
+            "email": self.email,
+            "age": self.age,
+            "location": self.location,
+            "interests": self.interests,
+            "matched_user_id": [user.id for user in self.match.all()],
+            "liked_user_id": [user.id for user in self.like.all()],
+        }
 
 class Message(models.Model):
     sender = models.ForeignKey("User", on_delete=models.CASCADE, related_name="sent_message")
