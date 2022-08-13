@@ -15,11 +15,12 @@ class User(AbstractUser):
     interests = models.TextField(blank=True)
     about = models.TextField(blank=True)
     gender = models.CharField(blank=False, choices=GENDER_CHOICES, max_length=100)
-    age = models.IntegerField(blank=False)
+    age = models.IntegerField(blank=True, null=True)
     location = models.TextField(blank=False)
     current = models.BooleanField(default=True)
     puzzles_solved = models.ManyToManyField("Combo_Instance", related_name="solver")
     picture = models.ImageField(upload_to='picture_uploads/', default='')
+    profile_complete = models.BooleanField(default=False)
     
     def serialize_personal_info(self):
         return {

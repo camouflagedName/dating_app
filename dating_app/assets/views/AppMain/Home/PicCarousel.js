@@ -1,26 +1,59 @@
-import React, {useState} from "react"
+import React, { useState, useEffect } from "react"
+import { OtherUserMain } from "../OtherUserProfile/OtherUserMain"
 
 const PicCarousel = (props) => {
-    const [randomUser, setRandomUser] = useState(null)
+    const [currUser, setCurrUser] = useState({})
+    const [prevUser, setPrevUser] = useState(null)
+    const [userData, setUserData] = useState()
+    const [moreUserData, setMoreUserData] = useState()
 
-    const getRandomUser = () => {
+
+    useEffect(() => {
+
+        getRandomUser()
+    }, [])
+
+    const getRandomUser = async () => {
         try {
-            const fetchData = fetch(`get_random_user/${props.userID}`)
+            const fetchData = await fetch(`get_random_user/${props.userID}`)
 
-            /*
             if (fetchData.ok) {
-                const userData = fetchData.json()  //userData will be an array of 2 arrays
+                const userData = await fetchData.json()  //userData will be an array of 2 arrays
+                const facts = userData[0]
+                setUserData(facts)
+                setMoreUserData(userData[1])
+
+                for (const entry in facts) {
+                    setCurrUser(prev => {
+                        return { ...prev, [entry]: facts[entry] }
+                    })
+                }
             }
-            */
         }
-        
+
         catch (error) {
             console.log(error)
         }
     }
 
-    const handleClick = () => {
-        getRandomUser()
+    const handleClick = (event) => {
+
+        if (event.currentTarget.id === "next") {
+            setPrevUser(currUser)
+            getRandomUser()
+        }
+
+        else {
+            setCurrUser(prevUser)
+            setPrevUser(null)
+        }
+    }
+
+    const pictureClick = event => {
+        if (event.currentTarget.id === "picture-carousel") {
+            
+            props.setPage(<OtherUserMain userData={userData} moreUserData={moreUserData} setPage={props.setPage} />)
+        }
     }
 
     return (
@@ -30,23 +63,35 @@ const PicCarousel = (props) => {
                 <button type="button" data-bs-target="#imageCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
                 <button type="button" data-bs-target="#imageCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
             </div>
-            <div className="carousel-inner">
-                <div className="carousel-item active bg-secondary">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" className="bi bi-person-square" viewBox="0 0 16 16">
-                        <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
-                        <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm12 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1v-1c0-1-1-4-6-4s-6 3-6 4v1a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12z" />
-                    </svg>
-                    <div className="carousel-caption d-block">
-                        <h1>User Name</h1>
-                        <p>Some data and symbols</p>
+            <button id="picture-carousel" type="button" className="btn border border-0" onClick={pictureClick}>
+                <div className="carousel-inner">
+                    <div className="carousel-item active bg-secondary">
+
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" className="bi bi-person-square" viewBox="0 0 16 16">
+                            <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
+                            <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm12 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1v-1c0-1-1-4-6-4s-6 3-6 4v1a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12z" />
+                        </svg>
+
+                        <div className="carousel-caption d-block">
+                            <h1>{currUser.username}</h1>
+                            <p>Some data and symbols</p>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <button className="carousel-control-prev" type="button" data-bs-target="#imageCarousel" data-bs-slide="prev">
-                <span className="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span className="visually-hidden">Previous</span>
             </button>
-            <button className="carousel-control-next" type="button" data-bs-target="#imageCarousel" data-bs-slide="next" onClick={handleClick}>
+            {
+                prevUser ?
+                    <>
+                        <button id="prev" className="carousel-control-prev" type="button" data-bs-target="#imageCarousel" data-bs-slide="prev" onClick={handleClick}>
+                            <span className="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span className="visually-hidden">Previous</span>
+                        </button>
+
+                    </>
+                    :
+                    <></>
+            }
+            <button id="next" className="carousel-control-next" type="button" data-bs-target="#imageCarousel" data-bs-slide="next" onClick={handleClick}>
                 <span className="carousel-control-next-icon" aria-hidden="true"></span>
                 <span className="visually-hidden">Next</span>
             </button>

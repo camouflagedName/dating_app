@@ -7,12 +7,22 @@ import { Info } from "./Info"
 import { Messages } from "./Messages"
 
 const lockImg =
-    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-lock-fill" viewBox="0 0 16 16">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-lock-fill" viewBox="0 0 16 16">
         <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z" />
     </svg>
 
+const lgLockImg =
+    <>
+        <div className="col text-center mt-5">
+            <svg xmlns="http://www.w3.org/2000/svg" width="160" height="160" fill="currentColor" className="bi bi-lock-fill" viewBox="0 0 16 16">
+                <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z" />
+            </svg>
 
-
+        </div>
+        <div className="d-flex justify-content-center mt-3">
+            <button type="button col-4" className="btn btn-secondary"><h4 className="m-0">Solve to Unlock</h4></button>
+        </div>
+    </>
 
 
 export const Profile = (props) => {
@@ -29,11 +39,11 @@ export const Profile = (props) => {
             </span>
         )
     }
-    
+
     const factsTitle = title("Quick Facts")
-    
+
     const infoTitle = title("User Info")
-    
+
     const msgTitle = title("Messages")
 
 
@@ -55,17 +65,17 @@ export const Profile = (props) => {
         info.push({ title: title, data: props.userData[dataTitle] })
     }
 
-    for (const dataTitle in props.otherUserData) {
+    for (const dataTitle in props.moreUserData) {
         const title = capitalizeFirstLetter(dataTitle)
-        facts.push({ title: title, data: props.otherUserData[dataTitle] })
+        facts.push({ title: title, data: props.moreUserData[dataTitle] })
     }
 
-    console.log(props)
+    console.table(props)
 
     const handleClick = (target) => {
-        if (!props.isLocked) {   
+        if (!props.isLocked) {
             switch (target) {
-                case "facts": setPage(<Facts userData={props.otherUserData} changePage={handleClick} locked={props.isLocked} />)
+                case "facts": setPage(<Facts userData={props.moreUserData} changePage={handleClick} locked={props.isLocked} />)
                     break
                 case "info": setPage(<Info userData={props.userData} locked={props.isLocked} />)
                     break
@@ -78,7 +88,7 @@ export const Profile = (props) => {
     }
 
     useEffect(() => {
-        setPage(props.isLocked ? lockImg : <Facts userData={props.otherUserData} changePage={handleClick} />)
+        setPage(props.isLocked ? lgLockImg : <Facts userData={props.moreUserData} changePage={handleClick} />)
 
     }, [props.isLocked])
 

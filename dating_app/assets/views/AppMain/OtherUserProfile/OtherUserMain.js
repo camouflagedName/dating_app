@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from "react";
 import { Profile } from "../Profile/ProfileMain";
 
-const OtherUserMain = (props) => {
+export const OtherUserMain = (props) => {
     const [isLocked, setIsLocked] = useState(true)
     const [pageState, setPageState] = useState()
 
@@ -23,6 +23,6 @@ const OtherUserMain = (props) => {
     //else, view photo/location
 
     return (
-        <Profile isMine={false} isLocked={isLocked} />
+        <Profile userData={props.userData} moreUserData={props.moreUserData} setPage={props.setPage} isMine={false} isLocked={isLocked} />
     )
 }

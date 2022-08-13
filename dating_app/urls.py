@@ -8,4 +8,5 @@ urlpatterns = [
     path("login", views.login_user, name="login"),
     path("get_user/<int:id>", views.get_user, name="get_user"),
     path("get_random_user/<int:id>", views.get_random_user, name="get_random"),
+    path("all_users", views.show_all_users)
 ]

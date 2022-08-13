@@ -25,9 +25,9 @@ const AppMain = (props) => {
     const handleClick = (target) => {
 
         switch (target) {
-            case "home": setPage(<Home userID={userData.id} />)
+            case "home": setPage(<Home userID={userData.id} setPage={setPage} />)
                 break
-            case "profile": setPage(<Profile userData={userData} otherUserData={moreUserData} setPage={setPage} isMine={true} isLocked={false} />)
+            case "profile": setPage(<Profile userData={userData} moreUserData={moreUserData} setPage={setPage} isMine={true} isLocked={false} />)
                 break
             case "combos": setPage(<Combos />)
                 break

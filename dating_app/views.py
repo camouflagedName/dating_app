@@ -21,11 +21,12 @@ def index(request):
 def register(request):
     post_data = json.loads(request.body)
     get_username = post_data.get('username')
+    get_email = post_data.get('email')
     get_password = post_data.get('password')
-    new_user = User.objects.create(username=get_username, password=get_password, age=10)
+    new_user = User.objects.create(username=get_username, password=get_password, email=get_email)
     login(request, new_user)
     
-    return HttpResponseRedirect(reverse('index'))
+    return JsonResponse({'user_id': new_user.id})
 
 @csrf_exempt
 def login_user(request):
@@ -66,15 +67,14 @@ def get_cookie(request):
 
 
 def get_random_user(request, id):
-    print(id)
     num_of_users = User.objects.all().count()
-
     random_num = random.randrange(1, num_of_users)
-    if random_num == id:
-        get_random_user(request, id)
-    random_user = User.objects.get(id=random_num)
     
-    return JsonResponse([random_user.serialize_personal_info(), random_user.serialize_other_facts()], safe=False)
+    if random_num != id:
+        random_user = User.objects.get(id=random_num)
+        return JsonResponse([random_user.serialize_personal_info(), random_user.serialize_other_facts()], safe=False)
+    
+    return get_random_user(request, id)
 
 def create_combo(request, id):
     post_data = json.loads(request.body)
@@ -84,3 +84,8 @@ def create_combo(request, id):
    # get_answer_1 = 
     pass
     
+
+def show_all_users(request):
+    all_users = User.objects.all()
+    
+    return JsonResponse([user.serialize_personal_info() for user in all_users], safe=False)
