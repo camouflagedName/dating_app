@@ -17,7 +17,7 @@ const LoginMain = (props) => {
     return (
         <div className="container">
             <div className="row vh-100">
-                <div className="col-10 col-sm-8 col-lg-5 m-auto border border-2 p-3">
+                <div className="col-10 col-sm-8 col-lg-5 m-auto border border-2 p-3 shadow shadow-5">
                     <div id="page" className="my-3">
                         <Tabs defaultActiveKey="login" id="tab-page" fill onSelect={handleClick}>
                             <Tab eventKey="login" title="Login"/>

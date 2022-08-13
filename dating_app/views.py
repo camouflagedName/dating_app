@@ -1,4 +1,5 @@
 import json
+import random
 from django.contrib.auth import authenticate, login, logout
 from click import password_option
 from django.shortcuts import render
@@ -7,12 +8,16 @@ from django.http import HttpResponseRedirect, JsonResponse, HttpResponse
 from .models import User
 from django.core import serializers
 from django.views.decorators.csrf import ensure_csrf_cookie
+from django.middleware.csrf import get_token
+from django.views.decorators.csrf import csrf_exempt
 
 @ensure_csrf_cookie
 def index(request):
+    #User.objects.all().delete()
     return render(request, "layout.html")
 
 #create new user
+@csrf_exempt
 def register(request):
     post_data = json.loads(request.body)
     get_username = post_data.get('username')
@@ -22,6 +27,7 @@ def register(request):
     
     return HttpResponseRedirect(reverse('index'))
 
+@csrf_exempt
 def login_user(request):
     post_data = json.loads(request.body)
     get_username = post_data.get('username')
@@ -30,8 +36,11 @@ def login_user(request):
     current_user = User.objects.get(username=get_username)
     if current_user.password == get_password:
         print("Logged in!")
+        print(current_user.id)
+        return JsonResponse({'user_id': current_user.id})
     else:
         print("NOT logged in!")
+        #set up warning message
         
     auth_user = authenticate(username=get_username, password=get_password)
     if auth_user is not None:
@@ -43,3 +52,35 @@ def login_user(request):
     return HttpResponseRedirect(reverse('index'))
         
 #login existing user
+
+
+def get_user(request, id):
+    get_user = User.objects.get(id=id)
+
+    return JsonResponse([get_user.serialize_personal_info(), get_user.serialize_other_facts()], safe=False)
+
+
+def get_cookie(request):
+    token = get_token(request)
+    return JsonResponse({'cookie': token})
+
+
+def get_random_user(request, id):
+    print(id)
+    num_of_users = User.objects.all().count()
+
+    random_num = random.randrange(1, num_of_users)
+    if random_num == id:
+        get_random_user(request, id)
+    random_user = User.objects.get(id=random_num)
+    
+    return JsonResponse([random_user.serialize_personal_info(), random_user.serialize_other_facts()], safe=False)
+
+def create_combo(request, id):
+    post_data = json.loads(request.body)
+    get_question_1 = post_data.get('question1')
+    get_question_2 = post_data.get('question2')
+    get_question_3 = post_data.get('question3')
+   # get_answer_1 = 
+    pass
+    

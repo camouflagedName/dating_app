@@ -18,16 +18,21 @@ class User(AbstractUser):
     age = models.IntegerField(blank=False)
     location = models.TextField(blank=False)
     current = models.BooleanField(default=True)
-    puzzles_solved = models.ManyToManyField("Puzzle_Instance", related_name="solver")
+    puzzles_solved = models.ManyToManyField("Combo_Instance", related_name="solver")
     picture = models.ImageField(upload_to='picture_uploads/', default='')
     
-    def serialize(self):
+    def serialize_personal_info(self):
         return {
+            "id": self.id,
             "username": self.username,
             "email": self.email,
             "age": self.age,
             "location": self.location,
             "interests": self.interests,
+        }
+        
+    def serialize_other_facts(self):
+        return {
             "matched_user_id": [user.id for user in self.match.all()],
             "liked_user_id": [user.id for user in self.like.all()],
         }
@@ -42,17 +47,24 @@ class Message(models.Model):
     def serialize(self):
         pass
     
-class Puzzle_Template(models.Model):
-    creator = models.ForeignKey("User", on_delete=models.CASCADE, related_name="created_puzzle")
+class Combo_Template(models.Model):
+    creator = models.ForeignKey("User", on_delete=models.CASCADE, related_name="user_puzzle")
     difficulty = models.IntegerField()
-    questions = models.ManyToManyField("Puzzle_Question", blank=False)
+    questions = models.ManyToManyField("Combo_Question", blank=False)
     
-class Puzzle_Instance(models.Model):
-    viewer = models.ForeignKey("User", on_delete=models.CASCADE, related_name="puzzles_accessed")
+class Combo_Instance(models.Model):
+    viewer = models.ForeignKey("User", on_delete=models.PROTECT, related_name="combo_accessed")
+    template = models.ForeignKey("Combo_Template", on_delete=models.CASCADE, related_name="instance")
     num_correct = models.IntegerField()
     num_wrong = models.IntegerField()
     timestamp = models.DateTimeField(auto_now_add=True)
     
-class Puzzle_Question(models.Model):
+class Combo_Question(models.Model):
     content = models.TextField()
     is_correct = models.BooleanField()
+    template = models.ForeignKey("Combo_Template", on_delete=models.CASCADE, related_name="combo_question")
+    right_answer = models.ForeignKey("Combo_Question_Answer", on_delete=models.PROTECT, related_name="parent_question")
+    
+class Combo_Question_Answer(models.Model):
+    content = models.TextField()
+    question = models.ForeignKey("Combo_Question", on_delete=models.CASCADE, related_name="wrong_answer")

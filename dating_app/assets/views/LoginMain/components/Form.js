@@ -18,10 +18,11 @@ const Form = (props) => {
         }
 
         try {
-            const returnData = await sendData(userData, props.page)
+            const returnData = await sendData(userData, `http://localhost:8000/${props.page}`)
 
             if (returnData.ok) {
-                props.login(true)
+                const userData = await returnData.json()
+                props.login({ activated: true, id: userData.user_id})
             }
         }
         catch (error) {

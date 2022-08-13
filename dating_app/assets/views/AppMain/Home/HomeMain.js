@@ -1,8 +1,11 @@
 import React from "react"
 import PicCarousel from "./PicCarousel"
 
-export const Home = () => {
+export const Home = (props) => {
+
+
+
     return (
-        <PicCarousel />
+        <PicCarousel userID={props.userID} />
     )
 }

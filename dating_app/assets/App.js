@@ -14,17 +14,17 @@ import AppMain from './views/AppMain/AppMain'
 import { useState, useEffect } from 'react'
 
 const App = () => {
-    const [isLoggedIn, setIsLoggedIn] = useState(false)
+    const [login, setLogin] = useState({activated: false, id: null})
 
     return (
         <div className='container-fluid'>
             <div className='row'>
                 {
-                    isLoggedIn === false
-                    ? <LoginMain login={setIsLoggedIn} />
-                    : <AppMain />
+                    login.activated === false
+                        ? <LoginMain login={setLogin} />
+                        : <AppMain id={login.id} />
                 }
-                
+
             </div>
         </div>
 
