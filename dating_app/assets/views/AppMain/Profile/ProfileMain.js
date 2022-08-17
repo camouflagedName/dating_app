@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react"
 import Tab from "react-bootstrap/Tab"
 import Tabs from "react-bootstrap/Tabs"
 import { CreateCombo } from "../../Combos/CreateCombo"
+import { CreateComboMain } from "../../Combos/CreateComboMain"
 import { Facts } from "./Facts"
 import { Info } from "./Info"
 import { Messages } from "./Messages"
@@ -79,7 +80,7 @@ export const Profile = (props) => {
                     break
                 case "info": setPage(<Info userData={props.userData} locked={props.isLocked} />)
                     break
-                case "combo": props.setPage(<CreateCombo />)
+                case "combo": props.setPage(<CreateComboMain />)
                     break
                 case "messages": setPage(<Messages locked={props.isLocked} />)
                     break

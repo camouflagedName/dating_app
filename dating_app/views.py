@@ -89,3 +89,7 @@ def show_all_users(request):
     all_users = User.objects.all()
     
     return JsonResponse([user.serialize_personal_info() for user in all_users], safe=False)
+
+
+def create_default_combo(request):
+    pass
