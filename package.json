@@ -7,9 +7,12 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "webpack --mode development --watch",
     "start": "webpack serve --open",
+    "build": "webpack",
     "sass": "sass --watch ./dating_app/static/scss/custom.scss ./dating_app/static/custom.css",
     "lint": "eslint",
-    "grunt": "grunt"
+    "grunt": "grunt",
+    "start_all": "npm run dev && python3 manage.py runserver",
+    "eb:prod": "npm run build && npm run start:prod"
   },
   "keywords": [],
   "author": "",
@@ -19,6 +22,7 @@
     "@babel/preset-env": "^7.18.9",
     "@babel/preset-react": "^7.18.6",
     "babel-loader": "^8.2.5",
+    "compression-webpack-plugin": "^10.0.0",
     "css-loader": "^6.7.1",
     "eslint": "^8.21.0",
     "grunt": "^1.5.3",

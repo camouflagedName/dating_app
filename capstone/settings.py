@@ -20,12 +20,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-h$al*+@js)529^vx9j^y)zwzu*)*^66isk73(!hohl2-g0(7w1'
+SECRET_KEY = 'django-insecure-tyxcp-s57=c6u#cm@xnl*!)_l6)bbj0)sk404f2@4a*z$(hxc6'
+                              
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['combo-app-env.eba-gxawpvv5.us-east-1.elasticbeanstalk.com', 'localhost']
 
 
 # Application definition
@@ -55,12 +56,16 @@ MIDDLEWARE = [
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:8080",
-    "http://127.0.0.1:8080"
+    "http://127.0.0.1:8080",
+    "http://localhost:8000",
+    "http://127.0.0.1:8000"
     ]
 
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:8080",
-    "http://127.0.0.1:8080"
+    "http://127.0.0.1:8080",
+    "http://localhost:8000",
+    "http://127.0.0.1:8000"
     ]
 
 CORS_ALLOW_ALL_ORIGINS = True
