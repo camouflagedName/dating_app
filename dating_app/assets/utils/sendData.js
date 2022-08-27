@@ -3,7 +3,7 @@ let csrftoken = getCookie('csrftoken')
 
 console.log(window.location.port)
 
-const getData = async () => {
+const getCustomCookie = async () => {
     try {
         const getC = await fetch('get_cookie')
 
@@ -20,23 +20,31 @@ const getData = async () => {
 }
 
 if (window.location.port === '8080') {
-    getData()
+    getCustomCookie()
 }
 
-const sendData = async (data, page) => {
-    console.log(csrftoken)
+const sendData = async (data, page, formData) => {
+    //console.log(csrftoken)
+    const content = formData ? '' : {'content-type':'application/json'}
+    const body = formData ? data : JSON.stringify(data)
+    console.log(body)
     const returnData = await fetch(page, {
         method: "POST",
         headers: {
-            "Content-type": 'application/json',
-            'X-CSRFToken': csrftoken
+            'X-CSRFToken': csrftoken,
+            content
         },
         //mode: same-origin, cors, no-cors
+        
         mode: "cors",
-        body: JSON.stringify(data)
+        body: body
     })
 
     return returnData
+}
+
+const getData = async (page) => {
+    
 }
 
 

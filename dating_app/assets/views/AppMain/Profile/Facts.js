@@ -1,30 +1,61 @@
-import React from "react"
+import React, { useContext, useEffect, useState } from "react"
 import { CustomRow } from "./components/Row"
-export const Facts = (props) => {
-    const data = props.userData
-   
+import { CustomButton } from "./components/Button"
+
+import { GlobalData } from "../../../utils/GlobalData"
+
+export const Facts = ({ entryData, changePage, isMine, selUserData }) => {
+    const [data, setData] = useState({})
+    const userData = useContext(GlobalData)
+
     const handleClick = () => {
-        props.changePage("combo")
+        changePage("combo")
     }
+
+    console.log(selUserData)
+    const getData = async () => {
+        const username = selUserData ?  selUserData.username : userData.tier2.username
+        try {
+            const response = await fetch(`get_user_facts/${username}`)
+            
+            if (response.ok) {
+                const returnDataArray = await response.json()
+                
+                for (const entry in returnDataArray[0]) {
+                    setData(prev => {
+                        return {...prev, [entry]: returnDataArray[0][entry]}
+                    })
+                }
+            }
+        }
+
+        catch (error) {
+            console.log("Error with getData in Facts", error)
+        }
+    }
+
+    useEffect(() => {
+        getData()
+    }, [])
 
     return (
         <>
             <ul className="list-group">
                 <li className="list-group-item border border-1 py-4">
-                    <CustomRow title={"Likes"} entry={data.likedUsers.length} />
+                    <CustomRow title={"Likes"} entry={data.num_likes} readOnly />
                 </li>
                 <li className="list-group-item border border-1 py-4">
-                    <CustomRow title={"Views"} entry={null} />
+                    <CustomRow title={"Match"} entry={data.num_matches} readOnly />
                 </li>
                 <li className="list-group-item border border-1 py-4">
-                    <CustomRow title={"Completed Combos"} entry={null} />
+                    <CustomRow title={"Completed Combos"} entry={data.num_attempted_combos} readOnly />
                 </li>
             </ul>
-            <div className="row mt-4">
-                <div className="d-flex col justify-content-center">
-                    <button type="button" className="btn btn-primary fs-4" onClick={handleClick}>Create/Edit Combo</button>
-                </div>
-            </div>
+            {
+                !isMine ||
+                <CustomButton label="Create/Edit Combo" handleClick={handleClick} />
+            }
+
         </>
     )
 }
