@@ -11,6 +11,7 @@ class User(AbstractUser):
     GENDER_CHOICES = [(MALE, 'Male'), (FEMALE, 'Female'), (TRANSGENDER, 'Transgender'), (NONBINARY_NONCONFORMING, 'Non-binary/Non-conforming'), (OTHER, 'Prefer not to respond')]
     
     match = models.ManyToManyField("User", related_name="matched_with")
+    views = models.IntegerField(default=0)
     like = models.ManyToManyField("User", related_name="liked_by")
     interests = models.TextField(blank=True)
     about = models.TextField(blank=True)

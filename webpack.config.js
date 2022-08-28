@@ -71,6 +71,15 @@ module.exports = {
         },
     },
     plugins: [
+
+        new ReactRefreshWebpackPlugin()
+    ].filter(Boolean),
+}
+
+/*
+
+
+
         new CompressionPlugin({
             filename: "[path].gz[query]",
             algorithm: "gzip",
@@ -78,6 +87,7 @@ module.exports = {
             threshold: 10240,
             minRatio: 0.8
         }),
-        new ReactRefreshWebpackPlugin()
-    ].filter(Boolean),
-}
+
+
+
+*/

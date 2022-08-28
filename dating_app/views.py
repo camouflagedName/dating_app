@@ -86,25 +86,28 @@ def get_cookie(request):
 
 
 def get_random_user(request, id):
+    try:
+        num_of_users = User.objects.all().count()
+        random_num = random.randrange(1, num_of_users+1)
 
-    num_of_users = User.objects.all().count()
-    random_num = random.randrange(1, num_of_users+1)
-
-    if random_num != id:
-        random_user = User.objects.get(id=random_num)
+        if random_num != id:
+            random_user = User.objects.get(id=random_num)
+            
+            if random_user.profile_complete:
+                try:
+                    picture = random_user.picture.url
+                except:
+                    picture = None
+            
+                return JsonResponse({
+                    "username": random_user.username,
+                    "picture": picture
+                    })
         
-        if random_user.profile_complete:
-            try:
-                picture = random_user.picture.url
-            except:
-                picture = None
-        
-            return JsonResponse({
-                "username": random_user.username,
-                "picture": picture
-                })
-    
-    return get_random_user(request, id)
+        return get_random_user(request, id)
+    except:
+        print("FAIL")
+        return JsonResponse({'users': False})
 
 @csrf_exempt
 def create_combo(request, id):
