@@ -2,12 +2,10 @@ const path = require('path')
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 const CompressionPlugin = require("compression-webpack-plugin");
 
-const isDevelopment = process.env.NODE_ENV !== 'production';
-
-console.log(process.env.NODE_ENV)
+//const isDevelopment = process.env.NODE_ENV !== 'production';
 
 module.exports = {
-    mode: isDevelopment ? 'development' : 'production',
+    mode: 'development',
     entry: './dating_app/assets/index.js',
     output: {
         path: path.resolve(__dirname, './dating_app/static'),
@@ -22,7 +20,7 @@ module.exports = {
                 loader: "babel-loader",
                 options: {
                     presets: ["@babel/preset-env", "@babel/preset-react"],
-                    plugins: [isDevelopment && require.resolve('react-refresh/babel')].filter(Boolean),
+                    plugins: [require.resolve('react-refresh/babel')].filter(Boolean),
                 },
             },
 
@@ -80,6 +78,6 @@ module.exports = {
             threshold: 10240,
             minRatio: 0.8
         }),
-        isDevelopment && new ReactRefreshWebpackPlugin()
+        new ReactRefreshWebpackPlugin()
     ].filter(Boolean),
 }
