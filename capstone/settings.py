@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-tyxcp-s57=c6u#cm@xnl*!)_l6)bbj0)sk404f2@4a*z$(hxc6
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', 'dating-app-dev.us-east-1.elasticbeanstalk.com', 'Datingapp-env.eba-v7fn4hf2.us-east-1.elasticbeanstalk.com', '172.31.15.119']
+ALLOWED_HOSTS = ['localhost', 'comob-dating-app-dev.us-east-1.elasticbeanstalk.com' ]
 
 
 # Application definition
