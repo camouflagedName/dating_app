@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-tyxcp-s57=c6u#cm@xnl*!)_l6)bbj0)sk404f2@4a*z$(hxc6
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['combo-app-env.eba-gxawpvv5.us-east-1.elasticbeanstalk.com', 'localhost']
+ALLOWED_HOSTS = ['localhost']
 
 
 # Application definition

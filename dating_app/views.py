@@ -2,7 +2,6 @@ import io
 import json
 import random
 from django.contrib.auth import authenticate, login, logout
-from click import password_option
 from django.shortcuts import render
 from django.urls import reverse
 from django.http import HttpResponseRedirect, JsonResponse, HttpResponse
