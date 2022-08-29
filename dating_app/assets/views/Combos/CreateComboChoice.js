@@ -1,6 +1,7 @@
 import React from "react";
 
 export default ({ handleClick, isComplete }) => {
+    console.log(isComplete)
     return (
         <>
             <div className="row flex-column">

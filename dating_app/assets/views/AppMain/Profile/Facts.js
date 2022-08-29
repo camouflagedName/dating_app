@@ -12,7 +12,6 @@ export const Facts = ({ entryData, changePage, isMine, selUserData }) => {
         changePage("combo")
     }
 
-    console.log(selUserData)
     const getData = async () => {
         const username = selUserData ?  selUserData.username : userData.tier2.username
         try {

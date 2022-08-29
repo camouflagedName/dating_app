@@ -20,7 +20,6 @@ const PicCarousel = (props) => {
                 if (userData.users) {
                     setCurrUser(userData)
                 }
-                else console.log("DO NOTHING")
             }
         }
 

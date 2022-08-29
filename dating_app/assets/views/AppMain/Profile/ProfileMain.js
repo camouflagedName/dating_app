@@ -68,6 +68,7 @@ export const Profile = ({ privateData, tier1Data, tier2Data, isMine, isLocked, s
                         break
                     case "messages": setPage(<Messages locked={isLocked} tier2Data={tier2Data} isMine />)
                         break
+                        //default: setPage(<Facts selUserData={tier2Data} changePage={handleClick} isMine />)
                 }
 
             }

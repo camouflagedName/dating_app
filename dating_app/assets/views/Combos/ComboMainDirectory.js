@@ -2,21 +2,43 @@ import React, { useState, useEffect, useContext } from "react";
 import { ComboMain } from "./ComboMain";
 import Choice from "./CreateComboChoice";
 import { GlobalData } from "../../utils/GlobalData";
-import { propTypes } from "react-bootstrap/esm/Image";
 
 export const ComboMainDirectory = ({ solve, comboData, setMainPage, setPage }) => {
     const [showCreator, setShowCreator] = useState(false)
     const [useDefault, setUseDefault] = useState()
     const [isComplete, setIsComplete] = useState(false)
+    const [updateComboData, setUpdateComboData] = useState(null)
 
     const userData = useContext(GlobalData)
 
+    const getData = async () => {
+         try {
+            const response = await fetch(`get_user_combo/${userData.private.id}`)
+
+            if (response.ok) {
+                const responseData = await response.json()
+
+                if (response.message) {
+                    console.log(responseData)
+                }
+
+                else {
+                    setIsComplete(true)
+                    setUpdateComboData(responseData)
+                }
+            }
+         }
+
+         catch (error) {
+            console.log(error)
+         }
+    }
+
     //replace with fetch
     useEffect(() => {
-        if (userData.private.comboData.length) {
-            setIsComplete(true)
-        }
-    })
+        getData()
+        
+    }, [])
 
     const handleClick = (event) => {
         setShowCreator(!showCreator)
@@ -36,7 +58,7 @@ export const ComboMainDirectory = ({ solve, comboData, setMainPage, setPage }) =
             <div className="container">
                 {
                     solve ? <ComboMain default={false} edit={false} comboData={comboData} setPage={setMainPage} solve />
-                        : showCreator ?  <ComboMain default={useDefault} edit={isComplete} setMainPage={setMainPage} setReturn={setShowCreator} />
+                        : showCreator ?  <ComboMain default={useDefault} edit={isComplete} setMainPage={setMainPage} setReturn={setShowCreator} comboData={updateComboData} />
                             : <Choice handleClick={handleClick} isComplete={isComplete} />
                 }
             </div>

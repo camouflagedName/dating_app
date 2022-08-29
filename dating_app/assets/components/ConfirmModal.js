@@ -12,7 +12,7 @@ export const ConfirmModal = (props) => {
             props.setReturn()
         }
     }
-    console.log(props)
+
     return (
         <Modal show={true} centered>
             <Modal.Header>

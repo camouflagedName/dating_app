@@ -34,7 +34,7 @@ def register(request):
     
     return JsonResponse({'user_id': new_user.id})
 
-@csrf_exempt
+@ensure_csrf_cookie
 def login_user(request):
     logout(request)
     post_data = json.loads(request.body)
@@ -102,11 +102,11 @@ def get_random_user(request, id):
                 return JsonResponse({
                     "username": random_user.username,
                     "picture": picture
-                    })
+                })
         
         return get_random_user(request, id)
-    except:
-        print("FAIL")
+    except Exception as e:
+        print(e)
         return JsonResponse({'users': False})
 
 @csrf_exempt
@@ -140,14 +140,21 @@ def get_user_info(request, username):
     
     return JsonResponse([user.serialize_public_info()], safe=False)
 
+def get_user_combo(request, id):
+    user = User.objects.get(id=id)
+    try:
+        combo = Combo_Template.objects.get(creator=id)
+        return JsonResponse([combo.serialize()], safe=False)
+    except Exception as e:
+        print(repr(e))
+        return JsonResponse({"message": "No combo created."})
+
+    
+
 def show_all_users(request):
     all_users = User.objects.all()
     
     return JsonResponse([user.serialize_personal_info() for user in all_users], safe=False)
-
-
-def create_default_combo(request):
-    pass
 
 def show_all_combos(request):
     all_combos = Combo_Template.objects.all()
@@ -242,6 +249,7 @@ def get_messages(request, user_id):
 
 @api_view(['POST'])
 @parser_classes([MultiPartParser, FormParser])
+@csrf_exempt
 def upload_image(request, user_id):
     user = User.objects.get(id=user_id)
     data = request.data
