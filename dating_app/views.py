@@ -113,6 +113,10 @@ def get_random_user(request, id):
 def create_combo(request, id):
     #Combo_Template.objects.all().delete()
     creator = User.objects.get(id=id)
+    
+    if creator.user_combo.exists():
+        creator.user_combo.all().delete()
+        
     new_combo = Combo_Template.objects.create(creator=creator)
     post_data = json.loads(request.body)
     
@@ -147,7 +151,7 @@ def get_user_combo(request, id):
         return JsonResponse([combo.serialize()], safe=False)
     except Exception as e:
         print(repr(e))
-        return JsonResponse({"message": "No combo created."})
+        return JsonResponse({"message": "No COMBO returned."})
 
     
 
@@ -258,21 +262,15 @@ def upload_image(request, user_id):
     image = data.get('image')
     image_file = ImageFile(image, name=file_name)
     
+    if user.picture:
+        user.picture.delete()
+        
     user.picture = image_file
     
     if user.age and user.location and user.gender and user.about and user.picture:
         user.profile_complete = True
     user.save()
 
- 
-
-    #bytes = io.BytesIO(request.body)
-
-    #image = ImageFile(bytes, name=title)
-
-    #user.picture = image
-    #user.save()
-    
     return JsonResponse({"message": "hello"})
 
 

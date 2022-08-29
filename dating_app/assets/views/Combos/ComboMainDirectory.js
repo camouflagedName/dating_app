@@ -18,7 +18,7 @@ export const ComboMainDirectory = ({ solve, comboData, setMainPage, setPage }) =
             if (response.ok) {
                 const responseData = await response.json()
 
-                if (response.message) {
+                if (responseData.message) {
                     console.log(responseData)
                 }
 
@@ -38,7 +38,7 @@ export const ComboMainDirectory = ({ solve, comboData, setMainPage, setPage }) =
     useEffect(() => {
         getData()
         
-    }, [])
+    }, [showCreator])
 
     const handleClick = (event) => {
         setShowCreator(!showCreator)
