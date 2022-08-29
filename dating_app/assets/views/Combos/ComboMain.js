@@ -144,7 +144,7 @@ export const ComboMain = props => {
                 showModalAfterSolving === false ||
                 <CustomModal numberCorrect={numCorrect} comboData={{ username: props.comboData.creator, combo_id: props.comboData.combo_id }} setPage={props.setPage} />
             }
-            <h1 className="text-center mb-5 text-muted" style={{fontSize: "75px"}}>{props.solve ? `Complete ${props.comboData.creator}'s` : props.edit === true ? "Edit Your" : "Build Your"} Combo</h1>
+            <h1 className="text-center mb-5 text-muted" style={{fontSize: "75px", marginTop: "100px"}}>{props.solve ? `Complete ${props.comboData.creator}'s` : props.edit === true ? "Edit Your" : "Build Your"} Combo</h1>
             <div className="container mb-5">
                 <div className="row my-auto">
                     <div className="col d-flex flex-column">

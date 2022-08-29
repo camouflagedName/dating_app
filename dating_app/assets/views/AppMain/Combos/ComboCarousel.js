@@ -19,7 +19,7 @@ export const ComboCarousel = ({ entryData }) => {
                 return (
                     <Carousel.Item>
                         <div className="row justify-content-center">
-                            <img src={picURL} className="d-block w-50" style={{ "width": "20rem" }} />
+                            <img src={picURL} className="d-block" style={{ "width": "500px" }} />
                         </div>
 
                         <Carousel.Caption>

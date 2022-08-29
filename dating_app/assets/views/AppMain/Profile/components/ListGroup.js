@@ -100,7 +100,7 @@ const OwnerMailbox = ({ defaultState, row, title }) => {
 const SelectedUserMailbox = ({ entry }) => {
 
     return (
-        <div className="row my-2">
+        <div className="row m-2">
             <div className="card px-0">
                 <ul className="list-group">
                     {entry}
