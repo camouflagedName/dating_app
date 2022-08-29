@@ -6,7 +6,7 @@ export const ComboCard = ({ entryData }) => {
 
     const listRows = entryData.map(entry => {
         return (
-            <li className="list-group-item d-flex fs-5">
+            <li key={entry.instance_id} className="list-group-item d-flex fs-5">
                 <div className="col">
                     {entry.combo_data.creator}
                 </div>

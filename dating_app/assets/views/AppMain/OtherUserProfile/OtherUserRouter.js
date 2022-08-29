@@ -1,3 +1,13 @@
+/** 
+ * 
+ * If combo.solved, everything will be unlocked
+ * user profile
+ * ability to message
+ * Else, only view photo and profile facts
+ * 
+**/
+
+
 import React, { useState, useEffect, useContext } from "react";
 import { Profile } from "../Profile/ProfileMain";
 
@@ -6,15 +16,10 @@ import { GlobalData } from "../../../utils/GlobalData";
 export const OtherUserRouter = (props) => {
     const [isLocked, setIsLocked] = useState(true)
     const [unlockLevel, setUnlockLevel] = useState(0)
-    //const [selectedUserData, setSelectedUserData] = useState([])
     const userData = useContext(GlobalData)
     const [receivedComboData, setReceivedComboData] = useState({})
-    //const [receivedUserData, setReceivedUserData] = useState({})
-    //const [receivedMoreUserData, setReceivedMoreUserData] = useState()
     const [tier2Data, setTier2Data] = useState()
     const [tier1Data, setTier1Data] = useState()
-    //each user will have an array of combos they solved or users they've unlocked
-    //retrieve from props
 
     const setLevel = async (url) => {
         const username = props.comboData ? props.comboData.username : props.selectedUsername
@@ -23,8 +28,9 @@ export const OtherUserRouter = (props) => {
 
             if (fetchJson.ok) {
                 const getInstanceDataArray = await fetchJson.json()
-                const getInstanceData = getInstanceDataArray.find(entry => entry.combo_data.creator === username)
-                //console.log(getInstanceData)
+                const getInstanceData = getInstanceDataArray
+                    .find(entry => entry.combo_data.creator === username)
+
                 let lvl = 0
                 if (getInstanceData) {
                     setIsLocked(false)
@@ -67,7 +73,7 @@ export const OtherUserRouter = (props) => {
                         gender: receivedUserData[2].gender
                     })
                 }
-                
+
                 setUnlockLevel(lvl)
             }
         }
@@ -83,32 +89,16 @@ export const OtherUserRouter = (props) => {
         setLevel(url)
     }, [])
 
-    /*
-        useEffect(() => {
-            const username = props.comboData ? props.comboData.username : props.selectedUsername
-            const url = `get_selected_user_data/${username}/${unlockLevel}`
-            getData(url)
-    
-        }, [unlockLevel])
-    */
-    /*
-        useEffect(() => {
-            console.log(selectedUserData)
-        }, [selectedUserData])
-        
-    */
-
-    //if combo.solved, everything will be unlocked
-    //user profile
-    //ability to message
-    //else, view photo/location
 
     return (
         <>
             {
-
-                    <Profile comboData={receivedComboData.comboData} tier1Data={tier1Data} tier2Data={tier2Data} setMainPage={props.setPage} isMine={false} isLocked={isLocked} level={unlockLevel} selUserData={props.selUserData} />
-
+                <Profile
+                    comboData={receivedComboData.comboData}
+                    tier1Data={tier1Data} tier2Data={tier2Data}
+                    setMainPage={props.setPage} isMine={false}
+                    isLocked={isLocked} level={unlockLevel}
+                    selUserData={props.selUserData} />
             }
         </>
     )

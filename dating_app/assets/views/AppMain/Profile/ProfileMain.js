@@ -90,7 +90,7 @@ export const Profile = ({ privateData, tier1Data, tier2Data, isMine, isLocked, s
 
     return (
 
-        <div className="card my-5 border border-2 shadow shadow-5 col-sm-10 offset-sm-1 col-xl-8 offset-xl-2 p-0">
+        <div className="card border border-2 shadow shadow-5 col-sm-10 offset-sm-1 col-xl-8 offset-xl-2 p-0" style={{marginTop: "150px", marginBottom: "100px"}}>
             <ProfilePic selUserData={selUserData} isMine={isMine}/>
             <div className="card-body px-0">
                 <div className="mb-0 fs-3">

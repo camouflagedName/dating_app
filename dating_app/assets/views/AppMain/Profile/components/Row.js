@@ -6,12 +6,14 @@ export const CustomRow = ({ title, entry, readOnly, setValue, option }) => {
     return (
         <h5 className="row">
             <span className="col text-start">{title}</span>
+            
             {
                 readOnly ?
                     <span className="col text-end">{entry}</span>
                     :
                     <InputType option={option} title={title} entry={entry} setValue={setValue} />
             }
+
         </h5>
     )
 }
@@ -37,14 +39,14 @@ const InputType = ({ option, title, entry, setValue }) => {
     )
 }
 
-const Option = ({ title, setValue}) => {
+const Option = ({ title, setValue }) => {
     const handleChange = (evt) => {
         //console.log(evt.target.value, evt.target.id)
         setValue(evt.target.id, evt.target.value)
     }
 
     return (
-        <select id={title} className="form-select col text-center py-1 mx-5" aria-label="select gender" onChange={handleChange}>
+        <select id={title} className="form-select col text-center py-1 mx-4" aria-label="select gender" onChange={handleChange}>
             <option selected>Choose</option>
             <option value="Male">Male</option>
             <option value="Female">Female</option>

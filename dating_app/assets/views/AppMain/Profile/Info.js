@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react"
+import React, { useEffect, useState, useContext, useRef } from "react"
 import { CustomRow } from "./components/Row"
 import { CustomButton } from "./components/Button"
 import sendData from "../../../utils/sendData"
@@ -10,11 +10,15 @@ export const Info = ({ privateData, entryData, isMine }) => {
     const [readOnly, setReadOnly] = useState(true)
     const [buttonLabel, setButtonLabel] = useState("Edit Info")
 
-    //fix: userData does not update
+    const inputRef = useRef()
+    const listHeight = inputRef.current
+    //console.log(listHeight.offsetHeight)
+
+
     const [inputVal, setInputVal] = useState({
         "username": "",
         "email": "",
-        "age": null,
+        "age": undefined,
         "location": "",
         "about": "",
         "interests": "",
@@ -39,6 +43,7 @@ export const Info = ({ privateData, entryData, isMine }) => {
             console.log(error)
         }
     }
+
 
     const sendInputVal = async URL => {
         try {
@@ -103,31 +108,33 @@ export const Info = ({ privateData, entryData, isMine }) => {
         <>
             {inputVal &&
                 <>
-                    <ul className="list-group">
-                        <li className="list-group-item border border-1 py-4">
-                            <CustomRow title={"Name"} entry={inputVal.username} readOnly />
-                        </li>
-                        {
-                            isMine ?
-                                <li className="list-group-item border border-1 py-4">
-                                    <CustomRow title={"E-mail"} entry={inputVal.email} readOnly />
-                                </li>
-                                :
-                                <></>
-                        }
-                        <li className="list-group-item border border-1 py-4">
-                            <CustomRow title={"Age"} entry={inputVal.age} readOnly={readOnly} setValue={handleChange} />
-                        </li>
-                        <li className="list-group-item border border-1 py-4">
-                            <CustomRow title={"Location"} entry={inputVal.location} readOnly={readOnly} setValue={handleChange} />
-                        </li>
-                        <li className="list-group-item border border-1 py-4">
-                            <CustomRow title={"Gender"} entry={inputVal.gender} readOnly={readOnly} setValue={handleChange} option />
-                        </li>
-                        <li className="list-group-item border border-1 py-4">
-                            <CustomRow title={"About"} entry={inputVal.about} readOnly={readOnly} setValue={handleChange} />
-                        </li>
-                    </ul>
+
+                        <ul id="infoList" className="list-group" ref={inputRef}>
+                            <li className="list-group-item border border-1 py-4">
+                                <CustomRow title={"Name"} entry={inputVal.username} readOnly />
+                            </li>
+                            {
+                                isMine ?
+                                    <li className="list-group-item border border-1 py-4">
+                                        <CustomRow title={"E-mail"} entry={inputVal.email} readOnly />
+                                    </li>
+                                    :
+                                    <></>
+                            }
+                            <li className="list-group-item border border-1 py-4">
+                                <CustomRow title={"Age"} entry={inputVal.age} readOnly={readOnly} setValue={handleChange} />
+                            </li>
+                            <li className="list-group-item border border-1 py-4">
+                                <CustomRow title={"Location"} entry={inputVal.location} readOnly={readOnly} setValue={handleChange} />
+                            </li>
+                            <li className="list-group-item border border-1 py-4">
+                                <CustomRow title={"Gender"} entry={inputVal.gender} readOnly={readOnly} setValue={handleChange} option />
+                            </li>
+                            <li className="list-group-item border border-1 py-4">
+                                <CustomRow title={"About"} entry={inputVal.about} readOnly={readOnly} setValue={handleChange} />
+                            </li>
+                        </ul>
+
                     {
                         !isMine ||
                         <CustomButton label={buttonLabel} handleClick={handleClick} />

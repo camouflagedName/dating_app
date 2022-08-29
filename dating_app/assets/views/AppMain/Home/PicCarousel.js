@@ -5,7 +5,6 @@ import { OtherUserRouter } from "../OtherUserProfile/OtherUserRouter"
 const PicCarousel = (props) => {
     const [currUser, setCurrUser] = useState({})
     const [prevUser, setPrevUser] = useState(null)
-    const [users, setUsers] = useState(true)
 
     useEffect(() => {
         getRandomUser()
@@ -17,7 +16,9 @@ const PicCarousel = (props) => {
 
             if (fetchData.ok) {
                 const userData = await fetchData.json()
-                if (userData.users) {
+
+                if (userData) {
+                    
                     setCurrUser(userData)
                 }
             }
@@ -52,7 +53,7 @@ const PicCarousel = (props) => {
         <>
             {
 
-                users ?
+                !currUser ?
                     <h1 className="text-center text-white">No Users Yet</h1>
                     :
                     <div id="imageCarousel" className="carousel slide col-sm-8 offset-sm-2 col-md-6 offset-md-3 col-xl-4 offset-xl-4 d-flex justify-content-center" data-bs-ride="carousel">

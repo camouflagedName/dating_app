@@ -83,7 +83,7 @@ const AppMain = (props) => {
 
     return (
         <div className="container-fluid d-flex flex-column vh-100 bg-dark">
-            <div className="row" id="titleBar">
+            <div className="row fixed-top" id="titleBar">
                 <TitleBar />
             </div>
             <div className="row my-auto bg-dark" id="mainContent">
@@ -91,7 +91,7 @@ const AppMain = (props) => {
                     {page}
                 </GlobalData.Provider>
             </div>
-            <div className="row fs-4 bg-light">
+            <div className="row fs-4 bg-light fixed-bottom">
                 <NavBar handleClick={handleClick} />
             </div>
         </div>
