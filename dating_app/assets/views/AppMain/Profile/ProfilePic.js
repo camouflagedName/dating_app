@@ -16,9 +16,10 @@ export const ProfilePic = ({ isMine, selUserData }) => {
     const [imagePreview, setImagePreview] = useState()
     const [showModal, setShowModal] = useState(false)
     const [pictureURL, setPictureURL] = useState()
+    const [hasData, setHasData] = useState(false)
     const userData = useContext(GlobalData)
 
-   const getImage = async () => {
+    const getImage = async () => {
         const username = isMine ? userData.tier2.username : selUserData.username
         try {
             const response = await fetch(`get_image_path/${username}`)
@@ -26,13 +27,14 @@ export const ProfilePic = ({ isMine, selUserData }) => {
             if (response.ok) {
                 const responseData = await response.json()
                 setPictureURL(responseData.img_path)
+                setHasData(true)
             }
         }
 
         catch (error) {
             console.log(error)
         }
-   }
+    }
 
     const setReturn = () => {
         setShowModal(false)
@@ -45,7 +47,7 @@ export const ProfilePic = ({ isMine, selUserData }) => {
             fileReader.onload = (event) => setFileDataURI(event.target.result)
             fileReader.readAsDataURL(evt.target.files[0])
             setShowModal(true)
-            
+
         }
     }
 
@@ -134,14 +136,23 @@ export const ProfilePic = ({ isMine, selUserData }) => {
                         <Image src={fileDataURI} thumbnail roundedCircle fluid style={{ "width": "65%" }} />
                     </ConfirmModal>
                     :
-                    pictureURL ?
-                        <>
-                            {userImage}
-                        </>
-                        :
-                        <>
-                            {defaultImg}
-                        </>
+                    <>
+                        {
+                            hasData &&
+                            <>
+                                {
+                                    pictureURL ?
+                                        <>
+                                            {userImage}
+                                        </>
+                                        :
+                                        <>
+                                            {defaultImg}
+                                        </>
+                                }
+                            </>
+                        }
+                    </>
             }
         </div>
     )

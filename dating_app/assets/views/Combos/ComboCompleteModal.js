@@ -13,7 +13,7 @@ export const CustomModal = ({ numberCorrect, comboData, setPage }) => {
     }, [numberCorrect])
 
     const handleClick = () => {
-        setPage(<OtherUserRouter setPage={setPage} comboData={comboData} selUserData={comboData.username}/>)
+        setPage(<OtherUserRouter setPage={setPage} comboData={comboData} selUserData={comboData}/>)
     }
 
     return (

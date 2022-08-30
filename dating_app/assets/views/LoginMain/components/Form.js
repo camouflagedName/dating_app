@@ -4,34 +4,44 @@ import sendData from "../../../utils/sendData";
 const Form = (props) => {
     const [passwordFormat, setPasswordFormat] = useState("password")
     const [input, setInput] = useState()
+    const [errMsg, setErrMsg] = useState(null)
 
     const handleInputChange = (event) => {
+        setErrMsg(null)
         setInput({ ...input, [event.target.id]: event.target.value })
     }
 
     const handleSubmit = async (event) => {
         event.preventDefault()
-        
-        const userData = {
-            username: input.username,
-            password: input.password
-        }
-        props.page === 'register' ? userData.email = input.email : null
 
-        try {
-            const returnData = await sendData(userData, `${props.page}`)
 
-            if (returnData.ok) {
-                const userData = await returnData.json()
-                props.login({ activated: true, id: userData.user_id })
+        if (input && input.username && input.password && (props.page === 'register' ? input.email : true )) {
+            const userData = {
+                username: input.username,
+                password: input.password
             }
 
-            else {
-                throw "Invalid login."     
+ 
+            try {
+                const returnData = await sendData(input, `${props.page}`)
+
+                if (returnData.ok) {
+                    const response = await returnData.json()
+                    if (response.user_id) props.login({ activated: true, id: response.user_id })
+                    else setErrMsg(response.error_message)
+                }
+
+                else {
+                    throw "Server error."
+                }
+            }
+            catch (error) {
+                console.log(error)
             }
         }
-        catch (error) {
-            console.log(error)
+
+        else {
+            setErrMsg("All fields must be filled in before continuing.")
         }
     }
 
@@ -70,6 +80,7 @@ const Form = (props) => {
                 <label className="form-check-label" htmlFor="showPasswordCheck">Show password</label>
             </div>
             <button type="submit" className="btn btn-primary">Submit</button>
+            <p className="text-danger mt-3">{errMsg}</p>
         </form>
     )
 }

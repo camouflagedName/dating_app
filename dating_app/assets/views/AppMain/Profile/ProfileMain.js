@@ -19,22 +19,29 @@ const lockImg =
 
 export const Profile = ({ privateData, tier1Data, tier2Data, isMine, isLocked, setMainPage, level, comboData, selUserData }) => {
     const [page, setPage] = useState()
-    //const [isLocked, setIsLocked] = useState()
+    const [tabIsDisabled, setTabIsDisabled] = useState({
+        facts: false,
+        info: false,
+        messages: false
+    })
 
-    const title = (titleArg) => {
+    const username = isMine ? tier2Data.username : selUserData.username
+
+    const title = (titleArg, tier) => {
+
         return (
             <span>
                 {
-                    isMine && isLocked ? lockImg : null
+                    !isMine && tier > level ? lockImg : null
                 }
                 {titleArg}
             </span>
         )
     }
 
-    const factsTitle = title("Quick Facts")
-    const infoTitle = title("User Info")
-    const msgTitle = title("Messages")
+    const factsTitle = title("Quick Facts", 1)
+    const infoTitle = title("User Info", 2)
+    const msgTitle = title("Messages", 3)
 
     //coerce userdata into 3 arrays: facts, info, messages
     let facts = []
@@ -68,14 +75,14 @@ export const Profile = ({ privateData, tier1Data, tier2Data, isMine, isLocked, s
                         break
                     case "messages": setPage(<Messages locked={isLocked} tier2Data={tier2Data} isMine />)
                         break
-                        //default: setPage(<Facts selUserData={tier2Data} changePage={handleClick} isMine />)
+                    //default: setPage(<Facts selUserData={tier2Data} changePage={handleClick} isMine />)
                 }
 
             }
 
             else if (target === 'facts' && level > 0) setPage(<Facts changePage={handleClick} selUserData={selUserData} locked={isLocked} />)
             else if (target === 'info' && level > 1) setPage(<Info entryData={tier2Data} locked={isLocked} />)
-            else if (target === 'messages' && level > 2) setPage(<Messages tier2Data={tier2Data}  />)
+            else if (target === 'messages' && level > 2) setPage(<Messages tier2Data={tier2Data} />)
 
         }
         else if (target === 'solve') {
@@ -84,20 +91,40 @@ export const Profile = ({ privateData, tier1Data, tier2Data, isMine, isLocked, s
     }
 
     useEffect(() => {
-        setPage(isLocked ? <LockScreen changePage={handleClick} /> : tier1Data ? <Facts selUserData={selUserData} changePage={handleClick} isMine={isMine} /> : <></>)
-    }, [isLocked, tier1Data, tier2Data, comboData])
+
+        if (!isMine) {
+            if (level < 3) {
+                setTabIsDisabled({ ...tabIsDisabled, messages: true})
+            }
+            if (level < 2) {
+                setTabIsDisabled({ ...tabIsDisabled, messages: true, info: true})
+            }
+            if (level < 1) {
+                setTabIsDisabled({ messages: true, info: true, facts: true})
+            }
+        }
 
 
+        setPage(isLocked
+            ? <LockScreen changePage={handleClick} />
+            : tier1Data
+                ? <Facts selUserData={selUserData} changePage={handleClick} isMine={isMine} />
+                : <></>)
+
+    }, [isLocked, tier1Data, tier2Data, comboData, level])
+
+    console.log(tabIsDisabled)
     return (
 
-        <div className="card border border-2 shadow shadow-5 col-sm-10 offset-sm-1 col-xl-8 offset-xl-2 p-0" style={{marginTop: "150px", marginBottom: "100px"}}>
-            <ProfilePic selUserData={selUserData} isMine={isMine}/>
+        <div className="card border border-2 shadow shadow-5 col-sm-10 offset-sm-1 col-xl-8 offset-xl-2 p-0" style={{ marginTop: "150px", marginBottom: "100px" }}>
+            <h1 className="text-center text-muted mt-3">{username}</h1>
+            <ProfilePic selUserData={selUserData} isMine={isMine} />
             <div className="card-body px-0">
                 <div className="mb-0 fs-3">
                     <Tabs defaultActiveKey="facts" id="tab-page" fill onSelect={handleClick}>
-                        <Tab eventKey="facts" title={factsTitle} />
-                        <Tab eventKey="info" title={infoTitle} />
-                        <Tab eventKey="messages" title={msgTitle} />
+                        <Tab eventKey="facts" title={factsTitle} disabled={tabIsDisabled.facts} />
+                        <Tab eventKey="info" title={infoTitle} disabled={tabIsDisabled.info} />
+                        <Tab eventKey="messages" title={msgTitle} disabled={tabIsDisabled.messages} />
                     </Tabs>
                 </div>
                 {page}

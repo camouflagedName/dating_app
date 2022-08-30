@@ -17,11 +17,10 @@ export const ComboCarousel = ({ entryData }) => {
 
 
                 return (
-                    <Carousel.Item>
+                    <Carousel.Item key={entry.instance_id}>
                         <div className="row justify-content-center">
-                            <img src={picURL} className="d-block" style={{ "width": "500px" }} />
+                            <img src={picURL} className="d-block" style={{ "width": "50rem" }} />
                         </div>
-
                         <Carousel.Caption>
                             <h1>{selectedUser}</h1>
                             <span className="fs-1">{percentCorrect}%</span>
@@ -56,7 +55,7 @@ export const ComboCarousel = ({ entryData }) => {
 
     return (
         <div className="row bg-dark">
-            <div className="col-6 offset-3">
+            <div className="col-lg-6 offset-lg-3">
                 <Carousel indicators={false} interval={null} >
                     {listItems}
                 </Carousel>

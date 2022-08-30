@@ -2,12 +2,15 @@ import io
 import json
 import random
 from django.contrib.auth import authenticate, login, logout
+from django.db import IntegrityError
 from django.shortcuts import render
 from django.urls import reverse
 from django.http import HttpResponseRedirect, JsonResponse, HttpResponse
 from .models import Combo_Instance, User, Combo_Template, Combo_Question, Combo_Question_Answer, Message
 from django.core import serializers
 from django.core.files.images import ImageFile
+from django.core.exceptions import ValidationError
+from django.core.validators import validate_email
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.middleware.csrf import get_token
 from django.views.decorators.csrf import csrf_exempt
@@ -25,14 +28,32 @@ def index(request):
 #create new user
 @csrf_exempt
 def register(request):
-    post_data = json.loads(request.body)
-    get_username = post_data.get('username')
-    get_email = post_data.get('email')
-    get_password = post_data.get('password')
-    new_user = User.objects.create(username=get_username, password=get_password, email=get_email)
-    login(request, new_user)
+    class PasswordError(Exception):
+        pass
+    class EmailError(Exception):
+        pass
     
-    return JsonResponse({'user_id': new_user.id})
+    try :
+        post_data = json.loads(request.body)
+        get_username = post_data.get('username')
+        
+        get_email = post_data.get('email')
+        validate_email(get_email)
+        
+        get_password = post_data.get('password')
+        if len(get_password) < 4:
+            raise PasswordError
+        
+        new_user = User.objects.create(username=get_username, password=get_password, email=get_email)
+        login(request, new_user)
+        
+        return JsonResponse({'user_id': new_user.id})
+    except IntegrityError as error:
+        return JsonResponse({'error_message': f'Registration Error: The username "{get_username}" already exists.'})
+    except PasswordError:
+        return JsonResponse({'error_message': 'X Password must be at least 4 characters.'})
+    except ValidationError:
+        return JsonResponse({'error_message': 'Email not formatted correctly.'})
 
 @ensure_csrf_cookie
 def login_user(request):
@@ -41,24 +62,17 @@ def login_user(request):
     get_username = post_data.get('username')
     get_password = post_data.get('password')
     
-    current_user = User.objects.get(username=get_username)
-
-    if current_user.password == get_password:
-        login(request, current_user)
-        return JsonResponse({'user_id': current_user.id})
-    else:
-        print("NOT logged in!")
-        #set up warning message
-        
-    auth_user = authenticate(username=get_username, password=get_password)
-    print(auth_user)
-    if auth_user is not None:
-        login(current_user)
-        print("Auth login: Logged in!")
-    else:
-        print("Auth login: NOT logged in!")
-        
-    return HttpResponseRedirect(reverse('index'))
+    try:
+        current_user = User.objects.get(username=get_username)
+        if current_user.password == get_password:
+            login(request, current_user)
+            
+            return JsonResponse({'user_id': current_user.id})
+        else:
+            raise Exception('Password is incorrect.')
+    
+    except Exception as error:
+        return JsonResponse({'error_message': "Incorrect password/username combination."})
         
 #login existing user
 
@@ -284,3 +298,13 @@ def get_image_path(request, username):
         picture_URL = None
     
     return JsonResponse({"img_path": picture_URL})
+
+
+def del_user(request, user_id):
+    user = User.objects.get(id=user_id)
+    name = user.username
+    id = user.id
+    
+    user.delete()
+    
+    return HttpResponse({f'Successfully deleted user #{name}, id num #{id} '})

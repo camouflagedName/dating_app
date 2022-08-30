@@ -33,6 +33,7 @@ class User(AbstractUser):
             "about": self.about,
             "interests": self.interests,
             "gender": self.gender,
+            "is_complete": self.profile_complete,
         }
         
     def serialize_public_info(self):

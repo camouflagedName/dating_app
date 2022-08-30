@@ -2,7 +2,8 @@ const path = require('path')
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 const CompressionPlugin = require("compression-webpack-plugin");
 
-//const isDevelopment = process.env.NODE_ENV !== 'production';
+const isDevelopment = process.env.NODE_ENV !== 'production'
+console.log('is development?', isDevelopment)
 
 module.exports = {
     mode: 'development',
@@ -71,10 +72,19 @@ module.exports = {
         },
     },
     plugins: [
-
+        new CompressionPlugin({
+            filename: "[name].gz",
+            algorithm: "gzip",
+            test: /\.js$|\.css$|\.html$/,
+            exclude: /node_modules/,
+            threshold: 10240,
+            minRatio: 0.8
+        }),
         new ReactRefreshWebpackPlugin()
     ].filter(Boolean),
 }
+
+
 
 /*
 

@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "webpack --mode development --watch",
     "start": "webpack serve --open",
-    "build": "webpack",
+    "build": "webpack --mode development",
     "sass": "sass --watch ./dating_app/static/scss/custom.scss ./dating_app/static/custom.css",
     "lint": "eslint",
     "grunt": "grunt",

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { propTypes } from "react-bootstrap/esm/Image";
 
-export const CustomRow = ({ title, entry, readOnly, setValue, option }) => {
+export const CustomRow = ({ title, entry, readOnly, setValue, option, button, showModal }) => {
 
     return (
         <h5 className="row">
@@ -11,14 +11,14 @@ export const CustomRow = ({ title, entry, readOnly, setValue, option }) => {
                 readOnly ?
                     <span className="col text-end">{entry}</span>
                     :
-                    <InputType option={option} title={title} entry={entry} setValue={setValue} />
+                    <InputType title={title} entry={entry} setValue={setValue} type={{option, button}} showModal={showModal}/>
             }
 
         </h5>
     )
 }
 
-const InputType = ({ option, title, entry, setValue }) => {
+const InputType = ({ type, title, entry, setValue, showModal }) => {
     const [inputVal, setInputVal] = useState(entry)
 
     const handleChange = (evt) => {
@@ -29,10 +29,11 @@ const InputType = ({ option, title, entry, setValue }) => {
     return (
         <>
             {
-                option ?
+                type.option ?
                     <Option title={title} setValue={setValue} />
-                    :
-                    <input id={title} className="col text-center py-1 mx-5" type="text" value={inputVal} onChange={handleChange}></input>
+                    : type.button 
+                    ? <Button title={title} entry={entry} showModal={showModal} />
+                    : <input id={title} className="col text-center py-1 mx-5" type="text" value={inputVal} onChange={handleChange}></input>
 
             }
         </>
@@ -54,5 +55,16 @@ const Option = ({ title, setValue }) => {
             <option value="Non-binary/Non-conforming">Non-binary/Non-conforming</option>
             <option value="Other">Other</option>
         </select>
+    )
+}
+
+const Button = ({ title, entry, showModal }) => {
+    
+    const handleClick = () => {
+        showModal(true)
+    }
+
+    return (
+        <button id={title} class="col btn btn-transparent border border-1 border-secondary text-center py-1 mx-5 text-center" type="button" onClick={handleClick}>{entry}</button>
     )
 }

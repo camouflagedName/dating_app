@@ -18,6 +18,8 @@ urlpatterns = [
     path("get_user_facts/<str:username>", views.get_user_facts),
     path("get_user_combo/<int:id>", views.get_user_combo),
     
+    path('del_user/<int:user_id>', views.del_user),
+    
     path("create_combo/<int:id>", views.create_combo),
     path("solve_combo/<int:user_id>/<int:combo_id>", views.solve_combo),
     path("get_completed_combos/<int:user_id>", views.get_completed_combos),
