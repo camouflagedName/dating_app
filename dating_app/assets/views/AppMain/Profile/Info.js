@@ -123,7 +123,7 @@ export const Info = ({ username, isMine }) => {
                                 <></>
                         }
                         <li className="list-group-item border border-1 py-4">
-                            <CustomRow title={"Age"} entry={inputVal.age} readOnly={readOnly} setValue={handleChange} />
+                            <CustomRow title={"Age"} entry={inputVal.age} readOnly={readOnly} setValue={handleChange} isNumber/>
                         </li>
                         <li className="list-group-item border border-1 py-4">
                             <CustomRow title={"Location"} entry={inputVal.location} readOnly={readOnly} setValue={handleChange} showModal={setShowModal} button />

@@ -41,11 +41,11 @@ export const InputModal = (props) => {
         const list = data.map((entry, index) => {
             if (entry.country) {
                 return (
-                    <option className="mx-5" value={index}>{entry.country}</option>
+                    <option key={index} className="mx-5" value={index}>{entry.country}</option>
                 )
             }
             return (
-                <option className="mx-5" value={index}>{entry}</option>
+                <option key={index} className="mx-5" value={index}>{entry}</option>
             )
 
 
@@ -108,8 +108,8 @@ const Option = ({ title, listOptions, setValue }) => {
     }
 
     return (
-        <select id={title} className="form-select text-center" aria-label="select gender" onChange={handleChange}>
-            <option selected>Choose your {title}</option>
+        <select id={title} defaultValue={'default'} className="form-select text-center" aria-label="select gender" onChange={handleChange}>
+            <option value={'default'} disabled>Choose your {title}</option>
             {listOptions}
         </select>
     )

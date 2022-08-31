@@ -204,8 +204,7 @@ def show_all_combos(request):
 
 @csrf_exempt
 def update_user(request, id):
-    print(request.user.id)
-    print(id)
+
     if request.user.id == id:
         
         get_user = User.objects.get(id=id)
@@ -219,11 +218,11 @@ def update_user(request, id):
         get_user.location = data_obj['location']
         get_user.gender = data_obj['gender']
         get_user.about = data_obj['about']
-        get_user.save()
         
-        if get_user.age and get_user.location and get_user.gender and get_user.about and get_user.picture:
+        if get_user.age and get_user.location and get_user.gender and get_user.about and get_user.picture and get_user.user_combo.exists():
             get_user.profile_complete = True
-        print(get_user.profile_complete)
+        
+
         get_user.save()
         
         return JsonResponse([get_user.serialize_personal_info()], safe=False)
