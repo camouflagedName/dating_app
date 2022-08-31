@@ -29,7 +29,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 if 'DJANGO_SECRET_KEY' in os.environ:
-    SECRET_KEY = os.environ('DJANGO_SECRET_KEY')
+    SECRET_KEY = os.environ['DJANGO_SECRET_KEY']
     
 else:
     SECRET_KEY = env('SECRET_KEY')
