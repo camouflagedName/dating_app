@@ -1,9 +1,13 @@
-import React, { useEffect, useState } from "react";
-import Carousel from 'react-bootstrap/Carousel';
+import React, { useEffect, useState } from "react"
+import Carousel from 'react-bootstrap/Carousel'
+import { Profile } from "../Profile/ProfileMain"
 
-export const ComboCarousel = ({ entryData }) => {
+export const ComboCarousel = ({ entryData, setPage }) => {
     const [listItems, setListItems] = useState([])
 
+    const handleClick = (username) => {
+        setPage(<Profile setPage={setPage} selUserData={{username: username}} isMine={false} />)
+    }
 
     useEffect(() => {
 
@@ -14,16 +18,27 @@ export const ComboCarousel = ({ entryData }) => {
                 const percentCorrect = (entry.num_correct / 5) * 100
 
                 const picURL = await getPictureURL(selectedUser)
-
+                
 
                 return (
                     <Carousel.Item key={entry.instance_id}>
                         <div className="row justify-content-center">
-                            <img src={picURL} className="d-block" style={{ "width": "50rem" }} />
+                            <button type="button" className="btn btn-transparent border border-0" onClick={() => handleClick(selectedUser)}>
+                                {
+                                    picURL ?
+                                        <img src={picURL} className="d-block" style={{ "width": "50rem" }} />
+                                        :
+                                        <i className="bi bi-hourglass-split text-secondary" style={{ marginTop: "200px", fontSize: "15rem" }}></i>
+                                }
+
+                            </button>
                         </div>
                         <Carousel.Caption>
-                            <h1>{selectedUser}</h1>
-                            <span className="fs-1">{percentCorrect}%</span>
+                            <div className="d-flex justify-content-center">
+                                <h1 className="me-5 mb-0 p-0 fs-1">{selectedUser}</h1>
+                                <span className="fs-1">{percentCorrect}%</span>
+                            </div>
+
                         </Carousel.Caption>
                     </Carousel.Item>
                 )
@@ -35,6 +50,7 @@ export const ComboCarousel = ({ entryData }) => {
 
     }, [])
 
+
     const getPictureURL = async (username) => {
 
         try {
@@ -43,7 +59,10 @@ export const ComboCarousel = ({ entryData }) => {
 
             if (response.ok) {
                 const returnData = await response.json()
-                return returnData.img_path
+                const imgCheck = await fetch(returnData.img_path)
+                
+                if (imgCheck.ok) return returnData.img_path
+                else return null
             }
         }
 

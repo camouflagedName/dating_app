@@ -5,7 +5,7 @@ import { InputModal } from "../../../components/InputModal"
 import sendData from "../../../utils/sendData"
 import { GlobalData } from "../../../utils/GlobalData"
 
-export const Info = ({ privateData, entryData, isMine }) => {
+export const Info = ({ username, isMine }) => {
     const userData = useContext(GlobalData)
     const userID = userData.private.id
     const [readOnly, setReadOnly] = useState(true)
@@ -13,9 +13,6 @@ export const Info = ({ privateData, entryData, isMine }) => {
     const [showModal, setShowModal] = useState(false)
 
     const inputRef = useRef()
-    const listHeight = inputRef.current
-    //console.log(listHeight.offsetHeight)
-
 
     const [inputVal, setInputVal] = useState({
         "username": "",
@@ -29,14 +26,13 @@ export const Info = ({ privateData, entryData, isMine }) => {
     const [infoGroupElements, setInfoGroupElements] = useState([])
 
     const getInfoData = async () => {
-        const user = isMine ? userData.tier2.username : entryData.username
+        const user = isMine ? userData.tier2.username : username
         const URL = `get_user_info/${user}`
         try {
             const response = await fetch(URL)
 
             if (response.ok) {
                 const returnData = await response.json()
-                console.log("GET INFO DATA", returnData[0])
                 setInputVal(returnData[0])
             }
         }
@@ -52,7 +48,6 @@ export const Info = ({ privateData, entryData, isMine }) => {
             const send = await sendData(inputVal, URL)
             if (send.ok) {
                 const returnData = await send.json()
-                console.log("SEND INPUT VAL", returnData[0])
                 setInputVal(returnData[0])
             }
         }
@@ -86,7 +81,7 @@ export const Info = ({ privateData, entryData, isMine }) => {
 
     const handleChange = (rowInputLabel, rowInputValue) => {
         setInputVal(prev => {
-            return { ...prev, [rowInputLabel]: rowInputValue }
+            return { ...prev, [rowInputLabel.toLowerCase()]: rowInputValue }
         })
     }
 
@@ -112,7 +107,7 @@ export const Info = ({ privateData, entryData, isMine }) => {
                 <>
 
                 {
-                    showModal && <InputModal setValue={handleChange} showModal={setShowModal}/>
+                    showModal && <InputModal setValue={handleChange} showModal={setShowModal} title="Location"/>
                 }
 
                     <ul id="infoList" className="list-group" ref={inputRef}>

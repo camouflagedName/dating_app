@@ -11,6 +11,8 @@ urlpatterns = [
     
     path("get_user/<int:id>", views.get_user, name="get_user"),
     path("get_selected_user_data/<str:username>/<int:level>", views.get_selected_user_data),
+    path("get_selected_user_combo/<str:username>/", views.get_selected_user_combo),
+    
     path("get_random_user/<int:id>", views.get_random_user, name="get_random"),
     path("all_users", views.show_all_users),
     path("update_user/<int:id>", views.update_user),

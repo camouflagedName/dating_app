@@ -4,7 +4,7 @@ import { CustomButton } from "./components/Button"
 
 import { GlobalData } from "../../../utils/GlobalData"
 
-export const Facts = ({ entryData, changePage, isMine, selUserData }) => {
+export const Facts = ({ changePage, isMine, username }) => {
     const [data, setData] = useState({})
     const userData = useContext(GlobalData)
 
@@ -13,9 +13,9 @@ export const Facts = ({ entryData, changePage, isMine, selUserData }) => {
     }
 
     const getData = async () => {
-        const username = selUserData ?  selUserData.username : userData.tier2.username
+        const user = isMine ?  userData.tier2.username : username
         try {
-            const response = await fetch(`get_user_facts/${username}`)
+            const response = await fetch(`get_user_facts/${user}`)
             
             if (response.ok) {
                 const returnDataArray = await response.json()

@@ -7,7 +7,7 @@ export default props => {
     }, [props.count])
 
     return (
-        <div className="progress" style={{ height: "6%", marginBottom: "100px" }}>
+        <div className="progress" style={{ height: "6%", marginBottom: "100px", marginLeft: "100px", marginRight: "100px" }}>
             <div className="progress-bar bg-success fs-5" role="progressbar" style={{ width: `${progPercent}%`}} aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
         </div>
     )

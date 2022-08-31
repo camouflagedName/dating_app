@@ -1,13 +1,11 @@
-import io
 import json
 import random
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 from django.shortcuts import render
 from django.urls import reverse
-from django.http import HttpResponseRedirect, JsonResponse, HttpResponse
+from django.http import JsonResponse, HttpResponse
 from .models import Combo_Instance, User, Combo_Template, Combo_Question, Combo_Question_Answer, Message
-from django.core import serializers
 from django.core.files.images import ImageFile
 from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
@@ -15,9 +13,8 @@ from django.views.decorators.csrf import ensure_csrf_cookie
 from django.middleware.csrf import get_token
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework import permissions
-from rest_framework.parsers import MultiPartParser, FormParser, JSONParser, FileUploadParser
+from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.decorators import api_view, parser_classes
-
 
 
 @ensure_csrf_cookie
@@ -30,8 +27,14 @@ def index(request):
 def register(request):
     class PasswordError(Exception):
         pass
-    class EmailError(Exception):
-        pass
+    class EmailError(ValidationError):
+        
+        def __init__(self, email):
+            self.email = email
+            self.message = ""
+            
+        def __str__(self):
+            return f''
     
     try :
         post_data = json.loads(request.body)
@@ -48,10 +51,13 @@ def register(request):
         login(request, new_user)
         
         return JsonResponse({'user_id': new_user.id})
+    
     except IntegrityError as error:
         return JsonResponse({'error_message': f'Registration Error: The username "{get_username}" already exists.'})
+    
     except PasswordError:
         return JsonResponse({'error_message': 'X Password must be at least 4 characters.'})
+    
     except ValidationError:
         return JsonResponse({'error_message': 'Email not formatted correctly.'})
 
@@ -82,6 +88,15 @@ def get_user(request, id):
 
     return JsonResponse([get_user.serialize_private_data(), get_user.serialize_tier1_data(), get_user.serialize_tier2_data()], safe=False)
 
+def get_selected_user_combo(request, username):
+    this_user = User.objects.get(id=request.user.id)
+    get_user = User.objects.get(username=username)
+    
+
+    return JsonResponse([get_user.serialize_combo_data_public()], safe=False)
+
+
+
 def get_selected_user_data(request, username, level):
     this_user = User.objects.get(id=request.user.id)
     get_user = User.objects.get(username=username)
@@ -100,28 +115,36 @@ def get_cookie(request):
 
 
 def get_random_user(request, id):
+    class PictureError(Exception):
+        pass
     try:
         num_of_users = User.objects.all().count()
         random_num = random.randrange(1, num_of_users+1)
 
         if random_num != id:
-            random_user = User.objects.get(id=random_num)
-            
-            if random_user.profile_complete:
-                try:
-                    picture = random_user.picture.url
-                except:
-                    picture = None
-            
-                return JsonResponse({
-                    "username": random_user.username,
-                    "picture": picture
-                })
+            try:
+                random_user = User.objects.get(id=random_num)
+            except:
+                get_random_user(request, id)
+            else:
+                if random_user.profile_complete:
+                    if random_user.picture.url:
+                        picture = random_user.picture.url
+                    else:
+                        raise PictureError
+                
+                    return JsonResponse({
+                        "username": random_user.username,
+                        "picture": picture
+                    })
         
         return get_random_user(request, id)
+    except PictureError:
+        get_random_user(request, id)
+        
     except Exception as e:
         print(e)
-        return JsonResponse({'users': False})
+
 
 @csrf_exempt
 def create_combo(request, id):
@@ -234,7 +257,7 @@ def solve_combo(request, user_id, combo_id):
     
     if correct_ans_count >= 4:
         creator = User.objects.get(username=combo_template.creator)
-        solver.match.set(creator)
+        solver.match.add(creator)
     
     return JsonResponse({'num_correct': correct_ans_count})
 
@@ -267,7 +290,6 @@ def get_messages(request, user_id):
 
 @api_view(['POST'])
 @parser_classes([MultiPartParser, FormParser])
-@csrf_exempt
 def upload_image(request, user_id):
     user = User.objects.get(id=user_id)
     data = request.data

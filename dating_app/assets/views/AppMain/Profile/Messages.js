@@ -8,7 +8,7 @@ import { TimedModal } from "../../../components/TimedModal"
 import { GlobalData } from "../../../utils/GlobalData"
 import sendData from "../../../utils/sendData"
 
-export const Messages = ({ isMine, tier2Data }) => {
+export const Messages = ({ isMine, username }) => {
     const [showList, setShowList] = useState(true)
     const [showEmail, setShowEmail] = useState(false)
     const [label, setLabel] = useState("Write a message")
@@ -16,7 +16,7 @@ export const Messages = ({ isMine, tier2Data }) => {
     const [messages, setMessages] = useState({sent: [], received: []})
 
     //const entry = [{ title: "Michael", data: "Message Title" }, { title: "Jess", data: "Message Title" }, { title: "Hampton", data: "Message Title" }, { title: "Leila", data: "Message Title" }]
-    const selectedUser = tier2Data.username
+    const selectedUser = username
     const myData = useContext(GlobalData)
 
     const sendMessageData = async URL => {
@@ -99,9 +99,9 @@ export const Messages = ({ isMine, tier2Data }) => {
                     <CustomInputGroup input={input} handleChange={handleChange} />
                     :
                     showList ?
-                        <CustomListGroup entry={messages} isMine={isMine} selectedUser={selectedUser}/>
+                        <CustomListGroup entry={messages} isMine={isMine} selectedUser={selectedUser} interactive/>
                         :
-                        <TimedModal message={`Your message was successfully sent.`} setReturn={handleModalClose} />
+                        <TimedModal message={`Your message was successfully sent.`} setReturn={handleModalClose} time={1} />
             }
             {
                 isMine ||

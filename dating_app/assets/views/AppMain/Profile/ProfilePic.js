@@ -5,7 +5,7 @@ import { ConfirmModal } from "../../../components/ConfirmModal";
 import { GlobalData } from "../../../utils/GlobalData";
 
 const tempIcon =
-    <svg xmlns="http://www.w3.org/2000/svg" width="15rem" fill="currentColor" className="bi bi-person-plus-fill" viewBox="0 0 16 16">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" className="bi bi-person-plus-fill" viewBox="0 0 16 16">
         <path d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
         <path fillRule="evenodd" d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5z" />
     </svg>
@@ -26,8 +26,12 @@ export const ProfilePic = ({ isMine, selUserData }) => {
 
             if (response.ok) {
                 const responseData = await response.json()
-                setPictureURL(responseData.img_path)
+                const imgCheck = await fetch(responseData.img_path)
                 setHasData(true)
+                if (imgCheck.ok) {
+                    setPictureURL(responseData.img_path)
+                    
+                }
             }
         }
 
@@ -126,7 +130,6 @@ export const ProfilePic = ({ isMine, selUserData }) => {
                 <input type="file" id="pic_upload" name="pic_upload" style={{ "opacity": 0, "width": "1px" }} accept="image/*" className="p-0 m-0" onChange={handleChange} />
             }
         </div>
-
 
     return (
         <div className="text-center rounded col-6 offset-3 py-3">

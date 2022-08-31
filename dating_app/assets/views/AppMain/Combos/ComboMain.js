@@ -3,10 +3,7 @@ import { ComboCard } from "./ComboCard"
 import { ComboCarousel } from "./ComboCarousel"
 import { GlobalData } from "../../../utils/GlobalData"
 
-//on load, fetch combo data
-
-
-export const Combos = () => {
+export const Combos = ({setPage}) => {
     const [comboInstanceData, setComboInstanceData] = useState([])
 
     const userData = useContext(GlobalData)
@@ -33,14 +30,14 @@ export const Combos = () => {
     }, [])
 
     return (
-        <div className="container">
+        <div className="container" style={{ marginTop: "125px", marginBottom: "100px" }}>
             {
                 comboInstanceData.length > 0 ?
                     <>
-                        <div className="my-5">
-                            <ComboCarousel entryData={comboInstanceData} />
+                        <div>
+                            <ComboCarousel entryData={comboInstanceData} setPage={setPage} />
                         </div>
-                        <div className="my-5">
+                        <div className="m-5">
                             <ComboCard entryData={comboInstanceData} />
                         </div>
                     </>

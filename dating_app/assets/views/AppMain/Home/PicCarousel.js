@@ -19,7 +19,14 @@ const PicCarousel = (props) => {
                 const userData = await fetchData.json()
 
                 if (userData) {
-                    setCurrUser(userData)
+                    const imgCheck = await fetch(userData.picture)
+
+                    if (imgCheck.ok) {
+                        setCurrUser(userData)
+                    }
+                    else (
+                        setCurrUser({ username: userData.username})
+                    )
                     setHasData(true)
                 }
             }
@@ -45,7 +52,7 @@ const PicCarousel = (props) => {
 
     const pictureClick = event => {
         if (event.currentTarget.id === "picture-carousel") {
-            props.setPage(<OtherUserRouter selectedUsername={currUser.username} setPage={props.setPage} selUserData={currUser} />)
+            props.setPage(<OtherUserRouter setPage={props.setPage} selUserData={currUser} isMine={false} />)
         }
     }
 
@@ -56,29 +63,25 @@ const PicCarousel = (props) => {
                     <h1 className="text-center text-white">No Users Yet</h1>
                     :
                     <>
-                        <div id="imageCarousel" className="carousel slide col col-lg-8 offset-lg-2 d-flex justify-content-center" data-bs-ride="carousel">
+                        <div id="imageCarousel" className="carousel slide col-lg-8 offset-lg-2 d-flex justify-content-center" style={{ marginTop: "125px" }} data-bs-ride="carousel">
                             <button id="picture-carousel" type="button" className="btn border border-0" onClick={pictureClick}>
                                 <div className="carousel-inner">
-                                    <div className="carousel-item active bg-secondary">
+                                    <div className="carousel-item active border border-5 border-secondary rounded">
                                         {
                                             hasData &&
 
                                             <>
                                                 {
                                                     currUser.picture ?
-                                                        <Image src={currUser.picture} rounded fluid style={{ "width": "50rem" }} />
+                                                    
+                                                        <Image src={currUser.picture} fluid style={{ "width": "50rem" }} />
                                                         :
-                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" className="bi bi-person-square" viewBox="0 0 16 16">
-                                                            <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
-                                                            <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm12 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1v-1c0-1-1-4-6-4s-6 3-6 4v1a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12z" />
-                                                        </svg>
+                                                        <i className="bi bi-hourglass-split text-white" style={{ marginTop: "200px", fontSize: "15rem" }}></i>
                                                 }
                                             </>
                                         }
 
-                                        <div className="carousel-caption d-block">
-                                            <h1>{currUser.username}</h1>
-                                        </div>
+
                                     </div>
                                 </div>
                             </button>
@@ -99,17 +102,20 @@ const PicCarousel = (props) => {
                                 <span className="visually-hidden">Next</span>
                             </button>
                         </div>
-                        <div className="col col-lg-8 offset-lg-2 justify-content-center">
+                        <div className="col col-lg-8 offset-lg-2 justify-content-center mb-5">
                             <div className="row">
                                 <div className="col text-center">
                                     <button type="button" className="btn btn-outline-light border border-0 fs-3" aria-label="lock" disabled>
-                                        <i class="bi bi-lock-fill"></i>
+                                        <i className="bi bi-lock-fill"></i>
                                         <p>Locked</p>
                                     </button>
                                 </div>
                                 <div className="col text-center">
+                                    <h1 className="text-white mt-3">{currUser.username}</h1>
+                                </div>
+                                <div className="col text-center">
                                     <button type="button" className="btn btn-outline-light border border-0 fs-3" aria-label="bookmark" disabled>
-                                        <i class="bi bi-bookmark"></i>
+                                        <i className="bi bi-bookmark"></i>
                                         <p>Bookmark</p>
                                     </button>
                                 </div>

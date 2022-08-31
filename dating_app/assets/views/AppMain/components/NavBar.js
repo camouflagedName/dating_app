@@ -8,15 +8,15 @@ const NavBar = (props) => {
     }
 
     return(
-        <Nav justify variant="pills" defaultActiveKey="home" onSelect={handleSelect}>
+        <Nav justify variant="pills" defaultActiveKey="home" onSelect={handleSelect} className="bg-secondary">
             <Nav.Item>
-                <Nav.Link eventKey="profile">Profile</Nav.Link>
+                <Nav.Link eventKey="profile" className="text-white">Profile</Nav.Link>
             </Nav.Item>
             <Nav.Item>
-                <Nav.Link eventKey="home">Home</Nav.Link>
+                <Nav.Link eventKey="home" className="text-white">Home</Nav.Link>
             </Nav.Item>
             <Nav.Item>
-                <Nav.Link eventKey="combos">Combos</Nav.Link>
+                <Nav.Link eventKey="combos" className="text-white">Combos</Nav.Link>
             </Nav.Item>
         </Nav>
     )

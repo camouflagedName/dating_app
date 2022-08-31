@@ -1,7 +1,20 @@
-import React, { useEffect } from "react"
+import React, { useEffect, useRef, useState } from "react"
 
 export const ComboCard = ({ entryData }) => {
+    const [windowThird, setWindowThird] = useState((window.innerHeight / 3))
+    const [cardHeight, setCardHeight] = useState(null)
+    const cardRef = useRef()
 
+    useEffect(() => {
+
+        
+
+    }, [window.innerHeight])
+
+ 
+    useEffect(() => {
+        setCardHeight(cardRef.current.offsetHeight > windowThird ? {height: windowThird.toString() + 'px'} : null)
+    }, [])
 
 
     const listRows = entryData.map(entry => {
@@ -21,24 +34,22 @@ export const ComboCard = ({ entryData }) => {
     })
 
     return (
-        <div className="card shadow shadow-5">
+        <div className="card"  ref={cardRef}>
 
-            <h3 className="card-header d-flex">
+            <h3 className="card-header d-flex" >
                 <div className="col">
                     Username
                 </div>
                 <div className="col text-center">
-                    Date Completed
+                    Date
                 </div>
                 <div className="col text-end">
                     Correct
                 </div>
             </h3>
 
-            <ul className="list-group list-group-flush">
-                {
-                    !entryData || listRows
-                }
+            <ul className="list-group list-group-flush" style={{...cardHeight, overflow: 'scroll'}}>
+                { entryData && listRows }
             </ul>
         </div>
 

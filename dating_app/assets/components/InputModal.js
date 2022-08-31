@@ -6,15 +6,16 @@ export const InputModal = (props) => {
     const [listElement, setListElement] = useState([])
     const [countryList, setCountryList] = useState([])
     const [countryValue, setCountryValue] = useState(null)
-    const [cityName, setCityName] = useState('')
-    const [cityList, setCityList] = useState([])
+    const [cityValue, setCityValue] = useState('')
+    const [cityRenderList, setCityRenderList] = useState([])
 
     //setMainPage(<ComboMainDirectory isMine setPage={setMainPage}/>)
 
     const handleclick = evt => {
         if (evt.target.id === 'cancel') props.showModal(false)
         else {
-            //props.submit()
+            let locationValue = allData[countryValue].cities[cityValue] + ', ' + allData[countryValue].country
+            props.setValue(props.title, locationValue )
             props.showModal(false)
         }
     }
@@ -36,7 +37,7 @@ export const InputModal = (props) => {
         }
     }
 
-    const mapArray = (data, createList) => {
+    const mapArray = (data, renderList) => {
         const list = data.map((entry, index) => {
             if (entry.country) {
                 return (
@@ -49,16 +50,15 @@ export const InputModal = (props) => {
 
 
         })
-        createList(list)
+        renderList(list)
     }
 
     useEffect(() => {
 
         if (countryValue) {
-            console.log(countryValue)
             const countryData = allData[countryValue]
             const cityArray = countryData.cities
-            mapArray(cityArray, setCityList)
+            mapArray(cityArray, setCityRenderList)
         }
     }, [countryValue])
 
@@ -72,14 +72,14 @@ export const InputModal = (props) => {
                 <Modal.Title>Location</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <div className="d-flex justify-content-center bg-dark">
-                    <div className="col m-5">
+                <div className="d-flex flex-column justify-content-center bg-dark">
+                    <div className="mx-5 mt-5 mb-3">
                         <Option title={"country"} listOptions={countryList} setValue={setCountryValue} />
                     </div>
                     {
-                        cityList.length > 0 &&
-                        <div className="col m-5">
-                            <Option title={"city"} listOptions={cityList} setValue={setCityName} />
+                        cityRenderList.length > 0 &&
+                        <div className="mx-5 mb-5 mt-3">
+                            <Option title={"city"} listOptions={cityRenderList} setValue={setCityValue} />
                         </div>
                     }
                 </div>
@@ -89,9 +89,13 @@ export const InputModal = (props) => {
                     <div className="col">
                         <button id="cancel" className="btn btn-danger" onClick={handleclick}>Cancel</button>
                     </div>
-                    <div className="col">
-                        <button id="accept" className="btn btn-primary" onClick={handleclick}>Save</button>
-                    </div>
+                    {
+                        cityValue &&
+                        <div className="col">
+                            <button id="accept" className="btn btn-primary" onClick={handleclick}>Update</button>
+                        </div>
+                    }
+
                 </div>
             </Modal.Footer>
         </Modal >

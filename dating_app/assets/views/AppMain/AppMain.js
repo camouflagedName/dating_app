@@ -35,7 +35,7 @@ const AppMain = (props) => {
                 break
             case "profile": setPage(<Profile tier2Data={tier2Data} tier1Data={tier1Data} comoboData={privateData.comboData} privateData={privateData} setMainPage={setPage} isMine={true} isLocked={false} />)
                 break
-            case "combos": setPage(<Combos />)
+            case "combos": setPage(<Combos setPage={setPage} />)
                 break
         }
     }
@@ -86,7 +86,7 @@ const AppMain = (props) => {
             <div className="row fixed-top" id="titleBar">
                 <TitleBar />
             </div>
-            <div className="row my-auto bg-dark" id="mainContent">
+            <div className="row bg-dark" id="mainContent">
                 <GlobalData.Provider value={{private: privateData, tier1: tier1Data, tier2: tier2Data}}>
                     {page}
                 </GlobalData.Provider>
