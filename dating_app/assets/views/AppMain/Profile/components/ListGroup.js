@@ -15,8 +15,8 @@ export const CustomListGroup = ({ entry, isMine, selectedUser, interactive }) =>
     }
 
     const receivedEntry = entry.received.map((entry) =>
-        <button id={`received-${entry.message_id}`}type="button" className="btn btn-transparent border border-0" onClick={handleClick}>
-            <li key={entry.message_id} className="list-group-item border border-1 py-1">
+        <button key={entry.message_id} id={`received-${entry.message_id}`}type="button" className="btn btn-transparent border border-0" onClick={handleClick}>
+            <li className="list-group-item border border-0 py-1">
                 <CustomRow title={entry.sender} entry={entry.subject} readOnly />
                 <Collapse in={collapse[`received-${entry.message_id}`] ? collapse[`received-${entry.message_id}`]:false}>
                     <span className="fs-5 text-muted">{entry.content}</span>
@@ -28,8 +28,8 @@ export const CustomListGroup = ({ entry, isMine, selectedUser, interactive }) =>
     else sent = entry.sent.filter(messageData => messageData.receiver === selectedUser)
 
     const sentEntry = sent.map((entry) =>
-        <button id={`sent-${entry.message_id}`} type="button" className="btn btn-transparent border border-0" onClick={handleClick}>
-            <li key={entry.message_id} className="list-group-item border border-1 py-1">
+        <button key={entry.message_id} id={`sent-${entry.message_id}`} type="button" className="btn btn-transparent border border-0" onClick={handleClick}>
+            <li className="list-group-item border border-0 py-1">
                 <CustomRow title={entry.receiver} entry={entry.subject} readOnly />
                 <Collapse in={collapse[`sent-${entry.message_id}`] ? collapse[`sent-${entry.message_id}`]:false}>
                     <span className="fs-5 text-muted">{entry.content}</span>
@@ -84,7 +84,7 @@ const BlankMessage = ({ text }) => {
     )
 }
 
-const OwnerMailbox = ({ defaultState, row, title, interactive }) => {
+const OwnerMailbox = ({ defaultState, row, title}) => {
     const [collapse, setCollapse] = useState(defaultState)
     const [icon, setIcon] = useState("up")
 
