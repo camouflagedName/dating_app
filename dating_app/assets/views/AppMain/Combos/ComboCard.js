@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react"
 
 export const ComboCard = ({ entryData }) => {
-    const [windowThird, setWindowThird] = useState((window.innerHeight / 3))
+    const [windowThird, setWindowThird] = useState((window.innerHeight / 4))
     const [cardHeight, setCardHeight] = useState(null)
     const cardRef = useRef()
 
@@ -38,7 +38,7 @@ export const ComboCard = ({ entryData }) => {
 
             <h3 className="card-header d-flex" >
                 <div className="col">
-                    Username
+                    Name
                 </div>
                 <div className="col text-center">
                     Date

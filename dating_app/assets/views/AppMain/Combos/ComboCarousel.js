@@ -26,7 +26,7 @@ export const ComboCarousel = ({ entryData, setPage }) => {
                             <button type="button" className="btn btn-transparent border border-0" onClick={() => handleClick(selectedUser)}>
                                 {
                                     picURL ?
-                                        <img src={picURL} className="d-block" style={{ "width": "50rem" }} />
+                                        <img src={picURL} className="d-block img-fluid border border-5 border-secondary" style={{ "width": "50rem" }} />
                                         :
                                         <i className="bi bi-hourglass-split text-secondary" style={{ marginTop: "200px", fontSize: "15rem" }}></i>
                                 }

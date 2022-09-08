@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Modal } from "react-bootstrap";
 
-export const CreateOrEditModal = ({ setReturn }) => {
+export const CreateOrEditModal = ({ setReturn, time=5 }) => {
     const [count, setCount] = useState(5)
 
 //setMainPage(<ComboMainDirectory isMine setPage={setMainPage}/>)
 
     useEffect(() => {
-        const modalTimeout = setTimeout(() => setReturn(prev => !prev) , 5000)
+        const modalTimeout = setTimeout(() => setReturn(prev => !prev) , 1000*time)
 
         return () => {clearTimeout(modalTimeout)}
     }, [])

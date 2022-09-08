@@ -10,15 +10,15 @@ export const CustomListGroup = ({ entry, isMine, selectedUser, interactive }) =>
 
     const handleClick = (evt) => {
         const isCollapsed = collapse[evt.currentTarget.id] ? collapse[evt.currentTarget.id] : false
-        //console.log(isCollapsed)
-        setCollapse({[evt.currentTarget.id]: !isCollapsed })
+        console.log(isCollapsed)
+        setCollapse({ [evt.currentTarget.id]: !isCollapsed })
     }
 
     const receivedEntry = entry.received.map((entry) =>
-        <button key={entry.message_id} id={`received-${entry.message_id}`}type="button" className="btn btn-transparent border border-0" onClick={handleClick}>
+        <button key={entry.message_id} id={`received-${entry.message_id}`} type="button" className="btn btn-transparent border border-1" onClick={handleClick}>
             <li className="list-group-item border border-0 py-1">
                 <CustomRow title={entry.sender} entry={entry.subject} readOnly />
-                <Collapse in={collapse[`received-${entry.message_id}`] ? collapse[`received-${entry.message_id}`]:false}>
+                <Collapse in={collapse[`received-${entry.message_id}`] ? collapse[`received-${entry.message_id}`] : false}>
                     <span className="fs-5 text-muted">{entry.content}</span>
                 </Collapse>
             </li>
@@ -27,12 +27,16 @@ export const CustomListGroup = ({ entry, isMine, selectedUser, interactive }) =>
     if (isMine) sent = entry.sent
     else sent = entry.sent.filter(messageData => messageData.receiver === selectedUser)
 
+    console.log(collapse)
     const sentEntry = sent.map((entry) =>
-        <button key={entry.message_id} id={`sent-${entry.message_id}`} type="button" className="btn btn-transparent border border-0" onClick={handleClick}>
+        <button key={entry.message_id} id={`sent-${entry.message_id}`} type="button" className="btn btn-transparent border border-1" onClick={handleClick}>
             <li className="list-group-item border border-0 py-1">
                 <CustomRow title={entry.receiver} entry={entry.subject} readOnly />
-                <Collapse in={collapse[`sent-${entry.message_id}`] ? collapse[`sent-${entry.message_id}`]:false}>
-                    <span className="fs-5 text-muted">{entry.content}</span>
+                <Collapse in={collapse[`sent-${entry.message_id}`] ? collapse[`sent-${entry.message_id}`] : false}>
+                    <div className="row">
+                        <div className="col-4 text-muted text-start">{entry.timestamp_day_month}: </div>
+                        <div className="col text-start">{entry.content}</div>
+                    </div>
                 </Collapse>
             </li>
         </button>
@@ -84,7 +88,7 @@ const BlankMessage = ({ text }) => {
     )
 }
 
-const OwnerMailbox = ({ defaultState, row, title}) => {
+const OwnerMailbox = ({ defaultState, row, title }) => {
     const [collapse, setCollapse] = useState(defaultState)
     const [icon, setIcon] = useState("up")
 
@@ -107,7 +111,7 @@ const OwnerMailbox = ({ defaultState, row, title}) => {
 
             </button>
             <Collapse in={collapse}>
-                <div className="card px-0">
+                <div className="card px-0 border border-0">
                     <ul className="list-group">
                         {row}
                     </ul>

@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useContext } from "react";
 import { ComboMain } from "./ComboMain";
 import Choice from "./CreateComboChoice";
+import { Profile } from "../AppMain/Profile/ProfileMain";
 import { GlobalData } from "../../utils/GlobalData";
 
-export const ComboMainDirectory = ({ solve, comboData, setMainPage, setPage }) => {
+export const ComboMainDirectory = ({ solve, comboData, setMainPage, tier2Data }) => {
     const [showCreator, setShowCreator] = useState(false)
     const [useDefault, setUseDefault] = useState()
     const [isComplete, setIsComplete] = useState(false)
@@ -49,17 +50,19 @@ export const ComboMainDirectory = ({ solve, comboData, setMainPage, setPage }) =
         else {
             setUseDefault(false)
         }
-
     }
 
+    const handleReturn = () => {
+        setMainPage(<Profile tier2Data={tier2Data} comoboData={userData.private.comboData} setMainPage={setMainPage} isMine={true} />)
+    }
 
     return (
         <>
-            <div className="container">
+            <div id="combo-container" className="container d-flex flex-column vh-100">
                 {
                     solve ? <ComboMain default={false} edit={false} comboData={comboData} setPage={setMainPage} solve />
                         : showCreator ?  <ComboMain default={useDefault} edit={isComplete} setMainPage={setMainPage} setReturn={setShowCreator} comboData={updateComboData} />
-                            : <Choice handleClick={handleClick} isComplete={isComplete} />
+                            : <Choice handleClick={handleClick} isComplete={isComplete} handleReturn={handleReturn}/>
                 }
             </div>
         </>

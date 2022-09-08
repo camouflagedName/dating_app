@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Modal } from "react-bootstrap";
-
+import { Profile } from "../AppMain/Profile/ProfileMain";
 import { OtherUserRouter } from "../AppMain/OtherUserProfile/OtherUserRouter";
 
 export const CustomModal = ({ numberCorrect, comboData, setPage }) => {

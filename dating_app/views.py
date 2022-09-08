@@ -88,13 +88,13 @@ def get_user(request, id):
 
     return JsonResponse([get_user.serialize_private_data(), get_user.serialize_tier1_data(), get_user.serialize_tier2_data()], safe=False)
 
+
 def get_selected_user_combo(request, username):
     this_user = User.objects.get(id=request.user.id)
     get_user = User.objects.get(username=username)
     
 
     return JsonResponse([get_user.serialize_combo_data_public()], safe=False)
-
 
 
 def get_selected_user_data(request, username, level):
@@ -132,10 +132,20 @@ def get_random_user(request, id):
                         picture = random_user.picture.url
                     else:
                         raise PictureError
-                
+                    
+                    bookmark = False
+                    ignore = False
+                    this_user = User.objects.get(id=id)
+                    if random_user in this_user.bookmarks.all():
+                        bookmark = True
+                    if random_user in this_user.ignored_users.all():
+                        ignore = True
+
                     return JsonResponse({
                         "username": random_user.username,
-                        "picture": picture
+                        "picture": picture,
+                        "bookmark": bookmark,
+                        "ignore": ignore,
                     })
         
         return get_random_user(request, id)
@@ -201,6 +211,37 @@ def show_all_combos(request):
     all_combos = Combo_Template.objects.all()
     
     return JsonResponse([combo.serialize() for combo in all_combos], safe=False)
+
+def update_bookmark(request, id, username):
+    this_user = User.objects.get(id=id)
+    target = User.objects.get(username=username)
+    message=''
+    
+    if target in this_user.bookmarks.all():
+        this_user.bookmarks.remove(target)
+        message = 'removed'
+        
+    else:
+        this_user.bookmarks.add(target)
+        message = 'added'
+    
+    return HttpResponse(f'{message}')
+    
+def update_ignore(request, id, username):
+    this_user = User.objects.get(id=id)
+    target = User.objects.get(username=username)
+    message=''
+    
+    if target in this_user.ignored_users.all():
+        this_user.ignored_users.remove(target)
+        message = 'removed'
+        
+    else:
+        this_user.ignored_users.add(target)
+        message = 'added'
+    
+    return HttpResponse(f'{message}')
+
 
 @csrf_exempt
 def update_user(request, id):
@@ -329,3 +370,10 @@ def del_user(request, user_id):
     user.delete()
     
     return HttpResponse({f'Successfully deleted user #{name}, id num #{id} '})
+
+
+def get_interactive_data(request, user_id):
+    user = User.objects.get(id=user_id)
+    
+    
+    return JsonResponse({ 'ignored_users': [target.username for target in user.ignored_users.all()], 'bookmarks': [target.username for target in user.bookmarks.all()]  })

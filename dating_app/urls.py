@@ -32,6 +32,11 @@ urlpatterns = [
     path("upload_image/<int:user_id>", views.upload_image),
     path("get_image_path/<str:username>", views.get_image_path),
     
+    path("update_bookmark/<int:id>/<str:username>", views.update_bookmark),
+    path("update_ignore/<int:id>/<str:username>", views.update_ignore),
+    
+    path('get_interactive_data/<int:user_id>', views.get_interactive_data),
+    
     path("show_all_combos", views.show_all_combos)
     
 ]  + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

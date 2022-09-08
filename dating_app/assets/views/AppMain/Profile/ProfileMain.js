@@ -15,7 +15,7 @@ const lockImg =
         <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z" />
     </svg>
 
-export const Profile = ({ tier1Data, tier2Data, isMine, setMainPage, selUserData }) => {
+export const Profile = ({ tier2Data, isMine, setMainPage, selUserData }) => {
     const [page, setPage] = useState()
     const [combo, setCombo] = useState(null)
     const [isLocked, setIsLocked] = useState(!isMine)
@@ -93,24 +93,9 @@ export const Profile = ({ tier1Data, tier2Data, isMine, setMainPage, selUserData
     const infoTitle = title("User Info", 2)
     const msgTitle = title("Messages", 3)
 
-    //coerce userdata into 3 arrays: facts, info, messages
-    let facts = []
-    let info = []
-    let msg = []
-
     //title case function
     function capitalizeFirstLetter(string) {
         return string.charAt(0).toUpperCase() + string.slice(1);
-    }
-
-    for (const dataTitle in tier2Data) {
-        const title = capitalizeFirstLetter(dataTitle)
-        info.push({ title: title, data: tier2Data[dataTitle] })
-    }
-
-    for (const dataTitle in tier1Data) {
-        const title = capitalizeFirstLetter(dataTitle)
-        facts.push({ title: title, data: tier1Data[dataTitle] })
     }
 
     const handleClick = async (target) => {
@@ -121,7 +106,7 @@ export const Profile = ({ tier1Data, tier2Data, isMine, setMainPage, selUserData
                         break
                     case "info": setPage(<Info username={tier2Data.username} isMine />)
                         break
-                    case "combo": setMainPage(<ComboMainDirectory isMine setMainPage={setMainPage} />)
+                    case "combo": setMainPage(<ComboMainDirectory isMine setMainPage={setMainPage} tier2Data={tier2Data}/>)
                         break
                     case "messages": setPage(<Messages username={tier2Data.username} isMine />)
                         break
@@ -160,7 +145,7 @@ export const Profile = ({ tier1Data, tier2Data, isMine, setMainPage, selUserData
                 : <Facts changePage={handleClick} username={username} isMine={isMine} />
         )
 
-    }, [isLocked, tier1Data, unlockLevel])
+    }, [isLocked, unlockLevel])
 
     return (
         <div className="card border border-2 shadow shadow-5 col-sm-10 offset-sm-1 col-xl-8 offset-xl-2 p-0" style={{ marginTop: "125px", marginBottom: "100px" }}>

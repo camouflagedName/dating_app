@@ -3,7 +3,7 @@ import { ComboCard } from "./ComboCard"
 import { ComboCarousel } from "./ComboCarousel"
 import { GlobalData } from "../../../utils/GlobalData"
 
-export const Combos = ({setPage}) => {
+export const Combos = ({ setPage }) => {
     const [comboInstanceData, setComboInstanceData] = useState([])
 
     const userData = useContext(GlobalData)
@@ -30,19 +30,19 @@ export const Combos = ({setPage}) => {
     }, [])
 
     return (
-        <div className="container" style={{ marginTop: "125px", marginBottom: "100px" }}>
+        <div className="container d-flex flex-column vh-100" style={{ marginTop: "125px", marginBottom: "250px" }}>
             {
                 comboInstanceData.length > 0 ?
                     <>
-                        <div>
-                            <ComboCarousel entryData={comboInstanceData} setPage={setPage} />
-                        </div>
+
+                        <ComboCarousel entryData={comboInstanceData} setPage={setPage} />
+
                         <div className="m-5">
                             <ComboCard entryData={comboInstanceData} />
                         </div>
                     </>
                     :
-                    <h1 className="text-center text-white">Compelete COMBOS and see your results here</h1>
+                    <h1 className="text-center text-white m-auto">Compelete COMBOS and see your results here</h1>
             }
         </div>
     )

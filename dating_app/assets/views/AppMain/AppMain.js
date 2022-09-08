@@ -25,7 +25,9 @@ const AppMain = (props) => {
     const [privateData, setPrivateData] = useState({
         id: null,
         email: '',
-        comboData: null
+        comboData: null,
+        bookmarks: [],
+        ignoredUsers: []
     })
 
     const handleClick = (target) => {
@@ -33,7 +35,7 @@ const AppMain = (props) => {
         switch (target) {
             case "home": setPage(<Home userID={privateData.id} setPage={setPage} />)
                 break
-            case "profile": setPage(<Profile tier2Data={tier2Data} tier1Data={tier1Data} comoboData={privateData.comboData} privateData={privateData} setMainPage={setPage} isMine={true} isLocked={false} />)
+            case "profile": setPage(<Profile tier2Data={tier2Data} comoboData={privateData.comboData} setMainPage={setPage} isMine={true} />)
                 break
             case "combos": setPage(<Combos setPage={setPage} />)
                 break
@@ -66,7 +68,9 @@ const AppMain = (props) => {
                     setPrivateData({
                         id: receivedUserData[0].id,
                         email: receivedUserData[0].email,
-                        comboData: receivedUserData[0].combo_data
+                        comboData: receivedUserData[0].combo_data,
+                        bookmarks: receivedUserData[0].bookmarks,
+                        ignoredUsers: receivedUserData[0].ignored_users,
                     })
                 }
             }

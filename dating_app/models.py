@@ -19,14 +19,16 @@ class User(AbstractUser):
     age = models.IntegerField(blank=True, null=True)
     location = models.TextField(blank=False)
     current = models.BooleanField(default=True)
-    #user_combos_completed = models.ManyToManyField("User", related_name="combo_attempted_by")
     picture = models.ImageField(upload_to='profile_pics', default='')
     profile_complete = models.BooleanField(default=False)
+    bookmarks = models.ManyToManyField("User", related_name="bookmarked_by")
+    ignored_users = models.ManyToManyField("User", related_name="ignored_by")
     
     def serialize_personal_info(self):
         return {
             "id": self.id,
             "username": self.username,
+            "password": self.password,
             "email": self.email,
             "age": self.age,
             "location": self.location,
@@ -59,15 +61,7 @@ class User(AbstractUser):
             "liked_user_id": [user.id for user in self.like.all()],
             "num_attempted_combos": self.combos_accessed.all().count(),
         }
-        
-    #possibly delete
-    def serialize_other_facts(self):
-        return {
-            "matched_user_id": [user.id for user in self.match.all()],
-            "liked_user_id": [user.id for user in self.like.all()],
-            "combo_data": [combo.serialize() for combo in self.user_combo.all()]  
-        }
-        
+              
     def serialize_user_facts(self):
 
         return {
@@ -88,10 +82,12 @@ class User(AbstractUser):
     def serialize_private_data(self):
         return {
             "id": self.id,
+            "password": self.password,
             "email": self.email,
             "complete": self.profile_complete,  
             "combo_data": [combo.serialize() for combo in self.user_combo.all()],
-
+            "bookmarks": [users.username for users in self.bookmarks.all()],
+            "ignored_users": [users.username for users in self.ignored_users.all()],
         }
     
     def serialize_messages(self):

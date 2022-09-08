@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "django-deps": "pip install django-cors-headers django-environ django-storages djangorestframework",
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "webpack --mode development --watch",
     "start": "webpack serve --open",

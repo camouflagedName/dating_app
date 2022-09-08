@@ -11,7 +11,7 @@ module.exports = {
     output: {
         path: path.resolve(__dirname, './dating_app/static'),
         publicPath: '/static/',
-        filename: 'bundle.js',
+        filename: 'bundle.gz',
     },
     module: {
         rules: [
