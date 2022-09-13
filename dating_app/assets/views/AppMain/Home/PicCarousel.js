@@ -73,15 +73,15 @@ const PicCarousel = (props) => {
             if (fetchData.ok) {
                 const userData = await fetchData.json()
 
-                if (userData) {
+                if (userData && userData.username) {
                     const imgCheck = await fetch(userData.picture)
 
                     if (imgCheck.ok) {
                         setCurrUser(userData)
                     }
-                    else (
+                    else {
                         setCurrUser({ username: userData.username })
-                    )
+                    }
                     setHasData(true)
                 }
             }
@@ -142,7 +142,9 @@ const PicCarousel = (props) => {
         <>
             {
                 !currUser ?
-                    <h1 className="text-center text-white">No Users Yet</h1>
+                    <div className="d-flex flex-column vh-100">
+                        <h1 className="text-center text-white m-auto">No Users Yet</h1>
+                    </div>
                     :
                     <>
                         <div id="imageCarousel" className="carousel slide col-lg-8 offset-lg-2 d-flex justify-content-center mt-5" data-bs-ride="carousel">

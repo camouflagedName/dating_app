@@ -6,13 +6,6 @@ export const ComboCard = ({ entryData }) => {
     const cardRef = useRef()
 
     useEffect(() => {
-
-        
-
-    }, [window.innerHeight])
-
- 
-    useEffect(() => {
         setCardHeight(cardRef.current.offsetHeight > windowThird ? {height: windowThird.toString() + 'px'} : null)
     }, [])
 

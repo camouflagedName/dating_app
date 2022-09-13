@@ -154,6 +154,7 @@ def get_random_user(request, id):
         
     except Exception as e:
         print(e)
+        return JsonResponse({'message': "No users yet."})
 
 
 @csrf_exempt

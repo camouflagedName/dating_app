@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react"
 import Carousel from 'react-bootstrap/Carousel'
 import { Profile } from "../Profile/ProfileMain"
 
-export const ComboCarousel = ({ entryData, setPage }) => {
+export const ComboCarousel = ({ entryData, setPage, isLoaded }) => {
     const [listItems, setListItems] = useState([])
 
     const handleClick = (username) => {
@@ -23,7 +23,7 @@ export const ComboCarousel = ({ entryData, setPage }) => {
                 return (
                     <Carousel.Item key={entry.instance_id}>
                         <div className="row justify-content-center">
-                            <button type="button" className="btn btn-transparent border border-0" onClick={() => handleClick(selectedUser)}>
+                            <button type="button" className="d-flex btn btn-transparent border border-0 justify-content-center" onClick={() => handleClick(selectedUser)}>
                                 {
                                     picURL ?
                                         <img src={picURL} className="d-block img-fluid border border-5 border-secondary" style={{ "width": "50rem" }} />
@@ -44,6 +44,7 @@ export const ComboCarousel = ({ entryData, setPage }) => {
                 )
             }))
             setListItems(result)
+            isLoaded(true)
         }
 
         getList()

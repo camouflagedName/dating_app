@@ -62,34 +62,34 @@ The COMBO page is separate from the COMBO Creator page. A user can navigate to t
 > root
 
 - requirements.txt 
-- package.json - *needed for React and Webpack server*suds
-- Grunt - *used to minify JS script*
+- package.json / package-lock.json - needed for React and Webpack server
+- webpack.config.js - webpack configuration file to serve front end separately from back end
 
-> capstone
+> capstone folder
 
 - settings file
-- env - *contains env vars*
+- env - *contains environment vars*
 - other starting/boilerplate files that were created by Django
 
-> node_modules
+> node_modules folder
 
 *this contains npm files that are used by React and Bootstrap*
 
-> dating_app: 
+> dating_app folder 
 
 *this contains the "meat" of the app.*
-- views: backend API code
-- urls: URL routes
+- views - backend API code
+- urls - URL routes
 
-> migrations: 
+> migrations folder 
 
 *contains migration data*
 
-> static
+> static folder
 - css and style files
-- bundle.js: script file served from Webpack
-- bundle.gz: compressed version
-- bundle.min.js: minified version
+- bundle.js - script file served from Webpack
+- bundle.gz - compressed version
+- bundle.min.js - minified version
 
 > assets
 
@@ -102,11 +102,15 @@ The COMBO page is separate from the COMBO Creator page. A user can navigate to t
 
 2. Open terminal or cmd line:
 
-3. In the directory you downloaded to, `cd capstone` 
-4. Run `pip install -r requirements.txt` to install all Python/Django packages
-5. Run `npm install` to install all npm packages needed for React
+In directory: 
+
+3. Run `pip install -r requirements.txt` to install all Python/Django packages
+
+4. Run `npm install` to install all npm packages needed for React
 
 *If using Windows* run `npm run django-deps` to make sure all Django packages properly installed
 
-6. `py manage.py migrate` and `py manage.py makemigrations`
+5. `py manage.py migrate` and `py manage.py makemigrations`
+
+
 
