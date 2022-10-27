@@ -26,7 +26,7 @@ const InputType = ({ type, title, entry, setValue, showModal, isNumber }) => {
                     <Option title={title} setValue={setValue} />
                     : type.button
                         ? <Button title={title} entry={entry} showModal={showModal} />
-                        : <Input title={title} inputVal={entry} setInputVal={setValue} isNumber />
+                        : <Input title={title} inputVal={entry} setInputVal={setValue} isNumber={isNumber} />
             }
         </>
     )

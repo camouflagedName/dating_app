@@ -38,7 +38,7 @@ else:
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', 'comob-dating-app-dev.us-east-1.elasticbeanstalk.com' ]
+ALLOWED_HOSTS = ['localhost', 'comob-dating-app-dev.us-east-1.elasticbeanstalk.com', '127.0.0.1' ]
 
 
 # Application definition

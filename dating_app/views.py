@@ -179,6 +179,10 @@ def create_combo(request, id):
         get_correct_answer = Combo_Question_Answer.objects.get(name=correct_answer_name, question=new_combo_question)
         get_correct_answer.is_correct = True
         get_correct_answer.save()
+
+    if creator.age and creator.location and creator.gender and creator.about and creator.picture and creator.user_combo.exists():
+        creator.profile_complete = True
+    creator.save()
     
     return JsonResponse({'status': 'ok'})
 
@@ -263,7 +267,7 @@ def update_user(request, id):
         
         if get_user.age and get_user.location and get_user.gender and get_user.about and get_user.picture and get_user.user_combo.exists():
             get_user.profile_complete = True
-        
+        get_user.save()
 
         get_user.save()
         
@@ -344,7 +348,7 @@ def upload_image(request, user_id):
         
     user.picture = image_file
     
-    if user.age and user.location and user.gender and user.about and user.picture:
+    if user.age and user.location and user.gender and user.about and user.picture and user.user_combo.exists():
         user.profile_complete = True
     user.save()
 
