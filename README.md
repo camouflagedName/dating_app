@@ -1,16 +1,11 @@
-# Distinctiveness and Complexity:
+# Combo Social/Dating App:
 
-## Distinctiveness
-This project can be described as a game-ified dating app. While the main focus of the app is to interact with individual users, the app first requires the user to complete a few tasks, one of which is to create their profile quize (called a "COMBO").
+## Description
+This app can be described as a game-ified dating app. While the main focus of the app is to interact with individual users, the app first requires the user to complete a few tasks, one of which is to create their profile quize (called a "COMBO").
 
 A COMBO is made up of a set of questions, each with their own set of possible answers (plus one "correct" answer) that other users can then answer to unlock a user's profile. At the same time, the user can unlock other users' profiles by completing their COMBOs.
 
 While this project has elements of a social network, it is also very distinct as user information, except for a picture and name, is private until certain requirements are met. This project also uses a messaging/email feature, but this is only a tiny portion of the app and is only used as a reward for completing a user's COMBO.
-
-## Complexity
-As stated previously, this app uses a few small elements from two of our previous projects, but focuses on quiz building and individual interaction. Users are able to create customized questions (currently, there are only 5 questions with 3 answers per question).
-
-The following will explore different features of the app to better understand the app's level of complexity:
 
 ### 1. Login
 
@@ -40,7 +35,6 @@ COMBOs are how users initially interact with one another. Until a COMBO is compl
 Depending on how many questions a visiting user gets correct, they can unlock features about the other user. For instance, if a user get a low score after completing a quiz (aka COMBO), they will only be able to see very basic facts about the selected user's profile. But if they match at 100%, they can see more details and send a direct message to the other user. If the other user then fails the first user's quiz, then only one party will be able to message. Users start on a home screen with a container that displays a random user. The user can either skip (remove from ever seeing again), bookmark, or access their quiz to complete it and unlock the profile. Users can also view 
 
 ### 5. COMBO Creator
-This was complex and robust enough that it required its own section both on the md file and as a folder in the JS files. 
 In a user's **personal profile**, they can:
 - create
     - default variation comes with questions and answers filled in; the user then selects the "correct answer"
