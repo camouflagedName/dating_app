@@ -1,4 +1,4 @@
-# Combo Social/Dating App:
+# COMBO (Social/Dating App):
 
 ## Description
 This app can be described as a game-ified dating app. While the main focus of the app is to interact with individual users, the app first requires the user to complete a few tasks, one of which is to create their profile quize (called a "COMBO").
